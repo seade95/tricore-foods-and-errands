@@ -19,7 +19,7 @@ const iconMap: Record<string, React.ElementType> = {
 
 const serviceImages: Record<string, string> = {
   food: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=80",
-  groceries: "https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=400&q=80",
+  groceries: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=80",
   errands: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&q=80",
   delivery: "https://images.unsplash.com/photo-1616432043562-3671ea2e5242?w=400&q=80",
   laundry: "https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=400&q=80",

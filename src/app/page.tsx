@@ -164,6 +164,39 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Groceries & Essentials */}
+      <section className="py-20 sm:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="relative">
+              <div className="rounded-3xl overflow-hidden shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80" alt="Fresh groceries" className="w-full h-[400px] object-cover" loading="lazy" />
+              </div>
+              <div className="absolute -bottom-6 -left-6 bg-tricore-red text-white rounded-2xl p-4 shadow-xl hidden sm:block">
+                <p className="text-2xl font-bold">Fast</p>
+                <p className="text-xs opacity-90">Delivery</p>
+              </div>
+            </div>
+            <div>
+              <p className="text-tricore-red font-semibold text-xs uppercase tracking-[0.25em] mb-3">Groceries & Essentials</p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-tricore-black mb-5 leading-tight">Sourced & Delivered To Your Door</h2>
+              <p className="text-tricore-gray-600 text-base leading-relaxed mb-6">Everyday groceries and household essentials — tell us what you need and we will source and deliver them to you.</p>
+              <div className="space-y-3 mb-8">
+                {["Fresh produce & pantry staples", "Household & personal care items", "Bulk & family-size orders", "Scheduled or same-day delivery"].map((item, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <CheckCircle className="w-5 h-5 text-tricore-red shrink-0" />
+                    <span className="text-tricore-gray-700 text-sm">{item}</span>
+                  </div>
+                ))}
+              </div>
+              <Link href="/services/groceries" className="inline-flex items-center gap-2 bg-tricore-red text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-tricore-red-dark hover:shadow-lg hover:shadow-tricore-red/25 transition-all">
+                Get Groceries <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Delivery & Logistics */}
       <section className="py-20 sm:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -259,6 +292,59 @@ export default function Home() {
                 </div>
                 <h3 className="font-bold text-tricore-black text-lg mb-2">{item.title}</h3>
                 <p className="text-tricore-gray-600 text-sm leading-relaxed">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-20 sm:py-24 bg-tricore-gray-50 relative overflow-hidden">
+        <div className="absolute -top-20 -left-20 w-80 h-80 bg-tricore-red/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="text-center mb-14">
+            <p className="text-tricore-red font-semibold text-xs uppercase tracking-[0.25em] mb-3">What People Say</p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-tricore-black mb-4">Trusted by Customers</h2>
+            <p className="text-tricore-gray-600 text-base max-w-xl mx-auto leading-relaxed">Real feedback from people who use Tricore every day.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                name: "Adaeze O.",
+                role: "Working Mum",
+                quote: "Tricore has been a lifesaver. I order food, send someone to pick up items from the market, and even have my laundry handled — all from one platform. It saves me hours every week.",
+                rating: 5,
+              },
+              {
+                name: "Tunde M.",
+                role: "Business Owner",
+                quote: "We use Tricore for our office errands and deliveries. The team is professional, communication is clear, and the business solutions package is exactly what we needed.",
+                rating: 5,
+              },
+              {
+                name: "Chidinma E.",
+                role: "University Student",
+                quote: "I used the grocery delivery service and was impressed. What would have taken me a whole afternoon at the market was done in less than two hours. Highly recommend.",
+                rating: 5,
+              },
+            ].map((t) => (
+              <div key={t.name} className="bg-white rounded-2xl p-8 border border-tricore-gray-200 hover:border-tricore-red/30 hover:shadow-xl transition-all duration-300 relative">
+                <div className="absolute top-6 right-6 text-tricore-red/10 text-6xl font-serif leading-none">&ldquo;</div>
+                <div className="flex gap-1 mb-4">
+                  {Array.from({ length: t.rating }).map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <p className="text-tricore-gray-600 text-sm leading-relaxed mb-6 relative z-10">{t.quote}</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-tricore-red-light flex items-center justify-center text-tricore-red font-bold text-sm">
+                    {t.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-tricore-black text-sm">{t.name}</p>
+                    <p className="text-tricore-gray-500 text-xs">{t.role}</p>
+                  </div>
+                </div>
               </div>
             ))}
           </div>

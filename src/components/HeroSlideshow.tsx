@@ -17,7 +17,7 @@ const slides = [
   },
   {
     image:
-      "https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=1600&q=80",
+      "https://images.unsplash.com/photo-1542838132-92c53300491e?w=1600&q=80",
     headline: "Groceries & Essentials.",
     sub: "Sourced & Delivered.",
     description:
