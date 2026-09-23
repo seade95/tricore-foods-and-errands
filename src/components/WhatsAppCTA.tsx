@@ -1,9 +1,13 @@
-import Link from "next/link";
-import { siteConfig } from "@/lib/config";
 import { MessageCircle } from "lucide-react";
 
-export default function WhatsAppCTA({ className = "" }: { className?: string }) {
-  const url = `https://wa.me/${siteConfig.whatsapp.number.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(siteConfig.whatsapp.message)}`;
+interface WhatsAppCTAProps {
+  number: string;
+  message: string;
+  className?: string;
+}
+
+export default function WhatsAppCTA({ number, message, className = "" }: WhatsAppCTAProps) {
+  const url = `https://wa.me/${number.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(message)}`;
 
   return (
     <a

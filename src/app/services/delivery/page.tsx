@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import ServicePageTemplate from "@/components/ServicePageTemplate";
 
 export const metadata: Metadata = {
   title: "Delivery & Logistics",

@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import ServicePageTemplate from "@/components/ServicePageTemplate";
 import RequestForm from "@/components/RequestForm";
 
 export const metadata: Metadata = {

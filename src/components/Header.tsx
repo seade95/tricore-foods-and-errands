@@ -2,10 +2,28 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { siteConfig } from "@/lib/config";
 import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 
-export default function Header() {
+interface NavItem {
+  label: string;
+  href: string;
+  enabled?: boolean;
+}
+
+interface ServiceItem {
+  id: string;
+  title: string;
+  href: string;
+  enabled?: boolean;
+}
+
+interface HeaderProps {
+  site?: { name: string; shortName: string; subtitle: string; logo?: string };
+  navLinks: NavItem[];
+  services: ServiceItem[];
+}
+
+export default function Header({ site, navLinks, services }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -15,6 +33,10 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const visibleNav = navLinks.filter((l) => l.enabled !== false);
+  const visibleServices = services.filter((s) => s.enabled !== false);
+  const s = site || { name: "TRICORE", shortName: "TRICORE", subtitle: "Foods & Errands" };
 
   return (
     <header
@@ -27,21 +49,25 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-10 h-10 bg-tricore-red rounded-xl flex items-center justify-center shadow-lg shadow-tricore-red/20 group-hover:shadow-tricore-red/40 transition-shadow">
-              <span className="text-white font-bold text-xl">T</span>
-            </div>
+            {s.logo ? (
+              <img src={s.logo} alt={s.name} className="h-10 w-auto" />
+            ) : (
+              <div className="w-10 h-10 bg-tricore-red rounded-xl flex items-center justify-center shadow-lg shadow-tricore-red/20 group-hover:shadow-tricore-red/40 transition-shadow">
+                <span className="text-white font-bold text-xl">T</span>
+              </div>
+            )}
             <div className="flex flex-col leading-none">
               <span className="font-bold text-tricore-black text-lg tracking-tight">
-                TRICORE
+                {s.shortName || "TRICORE"}
               </span>
               <span className="text-[10px] text-tricore-gray-500 tracking-[0.15em] uppercase hidden sm:block">
-                Foods & Errands
+                {s.subtitle || "Foods & Errands"}
               </span>
             </div>
           </Link>
 
           <nav className="hidden lg:flex items-center gap-1">
-            {siteConfig.navLinks.map((link) =>
+            {visibleNav.map((link) =>
               link.label === "Services" ? (
                 <div
                   key={link.href}
@@ -58,7 +84,7 @@ export default function Header() {
                   </Link>
                   {servicesOpen && (
                     <div className="absolute top-full left-0 w-64 bg-white border border-tricore-gray-100 rounded-2xl shadow-xl py-2 z-50 mt-1">
-                      {siteConfig.services.map((service) => (
+                      {visibleServices.map((service) => (
                         <Link
                           key={service.id}
                           href={service.href}
@@ -105,7 +131,7 @@ export default function Header() {
       {mobileOpen && (
         <div className="lg:hidden border-t border-tricore-gray-100 bg-white/95 backdrop-blur-md animate-fade-in">
           <div className="px-4 py-4 space-y-1">
-            {siteConfig.navLinks.map((link) => (
+            {visibleNav.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -117,7 +143,7 @@ export default function Header() {
             ))}
             <div className="pt-3 border-t border-tricore-gray-100 mt-3">
               <p className="px-4 py-2 text-xs font-semibold text-tricore-gray-400 uppercase tracking-wider">Services</p>
-              {siteConfig.services.map((service) => (
+              {visibleServices.map((service) => (
                 <Link
                   key={service.id}
                   href={service.href}

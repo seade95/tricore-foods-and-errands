@@ -1,0 +1,657 @@
+{
+  "site": {
+    "name": "Tricore Foods & Errands",
+    "shortName": "TRICORE",
+    "subtitle": "Foods & Errands",
+    "tagline": "Nourishing Life. Simplifying Living.",
+    "description": "Tricore Foods & Errands is an integrated Nigerian convenience and lifestyle service business designed to make everyday living easier by connecting customers with food, groceries, errands, delivery, logistics and related household services.",
+    "url": "https://tricorefoods.com",
+    "keywords": "Tricore Foods, food delivery Nigeria, errand services, grocery delivery, laundry services Nigeria, delivery logistics, convenience services, Nigerian delivery service, business logistics"
+  },
+  "contact": {
+    "phone": "+234XXXXXXXXXX",
+    "email": "hello@tricorefoods.com",
+    "address": "[Business Address — To be confirmed]",
+    "hours": "Mon - Sat: 8:00 AM - 9:00 PM | Sun: 10:00 AM - 6:00 PM"
+  },
+  "whatsapp": {
+    "number": "+234XXXXXXXXXX",
+    "message": "Hello Tricore, I would like to request a service. Please share the details."
+  },
+  "social": {
+    "facebook": "#",
+    "instagram": "#",
+    "tiktok": "#",
+    "linkedin": "#",
+    "twitter": "#",
+    "youtube": "#"
+  },
+  "payment": {
+    "enabled": true,
+    "note": "Payment details will be confirmed for each request.",
+    "methods": [
+      {
+        "id": "card",
+        "name": "Card Payment",
+        "enabled": true,
+        "instructions": "Secure card payment via payment link or POS."
+      },
+      {
+        "id": "transfer",
+        "name": "Bank Transfer",
+        "enabled": true,
+        "instructions": "Transfer to our dedicated account. Account details are shared on request confirmation."
+      },
+      {
+        "id": "ussd",
+        "name": "USSD",
+        "enabled": true,
+        "instructions": "Pay conveniently via USSD code from your bank."
+      },
+      {
+        "id": "pos",
+        "name": "POS on Delivery",
+        "enabled": false,
+        "instructions": "Payment on delivery via POS."
+      }
+    ]
+  },
+  "slides": [
+    {
+      "id": "slide-1",
+      "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1600&q=80",
+      "headline": "Nourishing Life.",
+      "sub": "Simplifying Living.",
+      "description": "Fresh meals sourced from your favourite restaurants and food vendors — delivered to your door.",
+      "cta": "Order Food",
+      "ctaHref": "/services/food",
+      "enabled": true
+    },
+    {
+      "id": "slide-2",
+      "image": "https://images.unsplash.com/photo-1542838132-92c53300491e?w=1600&q=80",
+      "headline": "Groceries & Essentials.",
+      "sub": "Sourced & Delivered.",
+      "description": "Everyday groceries and household essentials — tell us what you need, we deliver.",
+      "cta": "Get Groceries",
+      "ctaHref": "/services/groceries",
+      "enabled": true
+    },
+    {
+      "id": "slide-3",
+      "image": "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1600&q=80",
+      "headline": "Errands Handled.",
+      "sub": "Time Saved.",
+      "description": "Pick-ups, drop-offs, shopping, document collection — delegate it all to Tricore.",
+      "cta": "Request an Errand",
+      "ctaHref": "/services/errands",
+      "enabled": true
+    },
+    {
+      "id": "slide-4",
+      "image": "https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=1600&q=80",
+      "headline": "Fresh Clothes.",
+      "sub": "Less Stress.",
+      "description": "Professional laundry care with pickup and delivery — wash, dry, fold and iron.",
+      "cta": "Book Laundry",
+      "ctaHref": "/services/laundry",
+      "enabled": true
+    },
+    {
+      "id": "slide-5",
+      "image": "https://images.unsplash.com/photo-1616432043562-3671ea2e5242?w=1600&q=80",
+      "headline": "Delivered Anywhere.",
+      "sub": "Fast & Reliable.",
+      "description": "Move items efficiently from one location to another with Tricore logistics.",
+      "cta": "Request Delivery",
+      "ctaHref": "/services/delivery",
+      "enabled": true
+    },
+    {
+      "id": "slide-6",
+      "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=80",
+      "headline": "Business Solutions.",
+      "sub": "Built for Organisations.",
+      "description": "Convenience and logistics support tailored for offices, schools and institutions.",
+      "cta": "Partner With Tricore",
+      "ctaHref": "/services/business",
+      "enabled": true
+    }
+  ],
+  "services": [
+    {
+      "id": "food",
+      "title": "Food",
+      "shortDescription": "Order meals from your preferred restaurants and food vendors.",
+      "cta": "Order Food",
+      "href": "/services/food",
+      "icon": "UtensilsCrossed",
+      "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=80",
+      "enabled": true
+    },
+    {
+      "id": "groceries",
+      "title": "Groceries",
+      "shortDescription": "Get groceries and everyday essentials sourced and delivered.",
+      "cta": "Get Groceries",
+      "href": "/services/groceries",
+      "icon": "ShoppingBasket",
+      "image": "https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=80",
+      "enabled": true
+    },
+    {
+      "id": "errands",
+      "title": "Errands",
+      "shortDescription": "Let Tricore handle tasks that you don't have time to handle yourself.",
+      "cta": "Request an Errand",
+      "href": "/services/errands",
+      "icon": "ListChecks",
+      "image": "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&q=80",
+      "enabled": true
+    },
+    {
+      "id": "delivery",
+      "title": "Delivery & Logistics",
+      "shortDescription": "Move items efficiently from one location to another.",
+      "cta": "Request Delivery",
+      "href": "/services/delivery",
+      "icon": "Truck",
+      "image": "https://images.unsplash.com/photo-1616432043562-3671ea2e5242?w=400&q=80",
+      "enabled": true
+    },
+    {
+      "id": "laundry",
+      "title": "Laundry",
+      "shortDescription": "Professional laundry care designed for convenience.",
+      "cta": "Book Laundry",
+      "href": "/services/laundry",
+      "icon": "Shirt",
+      "image": "https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=400&q=80",
+      "enabled": true
+    },
+    {
+      "id": "business",
+      "title": "Business Services",
+      "shortDescription": "Convenience and logistics support for organisations and institutions.",
+      "cta": "Talk to Tricore",
+      "href": "/services/business",
+      "icon": "Building2",
+      "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=80",
+      "enabled": true
+    }
+  ],
+  "navLinks": [
+    {
+      "label": "Home",
+      "href": "/",
+      "enabled": true
+    },
+    {
+      "label": "About",
+      "href": "/about",
+      "enabled": true
+    },
+    {
+      "label": "Services",
+      "href": "/services",
+      "enabled": true
+    },
+    {
+      "label": "How It Works",
+      "href": "/how-it-works",
+      "enabled": true
+    },
+    {
+      "label": "Contact",
+      "href": "/contact",
+      "enabled": true
+    },
+    {
+      "label": "Track Order",
+      "href": "/track-order",
+      "enabled": true
+    }
+  ],
+  "testimonials": [
+    {
+      "id": "t1",
+      "name": "Adaeze O.",
+      "role": "Working Mum",
+      "quote": "Tricore has been a lifesaver. I order food, send someone to pick up items from the market, and even have my laundry handled — all from one platform. It saves me hours every week.",
+      "rating": 5,
+      "enabled": true
+    },
+    {
+      "id": "t2",
+      "name": "Tunde M.",
+      "role": "Business Owner",
+      "quote": "We use Tricore for our office errands and deliveries. The team is professional, communication is clear, and the business solutions package is exactly what we needed.",
+      "rating": 5,
+      "enabled": true
+    },
+    {
+      "id": "t3",
+      "name": "Chidinma E.",
+      "role": "University Student",
+      "quote": "I used the grocery delivery service and was impressed. What would have taken me a whole afternoon at the market was done in less than two hours. Highly recommend.",
+      "rating": 5,
+      "enabled": true
+    }
+  ],
+  "faq": [
+    {
+      "id": "f1",
+      "question": "How do I order food?",
+      "answer": "Select the Food service, tell us what you need and where you are, and we will source and deliver your food from your preferred vendors.",
+      "enabled": true
+    },
+    {
+      "id": "f2",
+      "question": "What kinds of errands can Tricore handle?",
+      "answer": "Tricore can handle pick-up, drop-off, shopping, document collection, item delivery, local purchases, household errands and business-related tasks.",
+      "enabled": true
+    },
+    {
+      "id": "f3",
+      "question": "How does delivery work?",
+      "answer": "Submit a delivery request with your pickup and destination details. We confirm the logistics, assign a rider and complete the delivery.",
+      "enabled": true
+    },
+    {
+      "id": "f4",
+      "question": "How do I book laundry?",
+      "answer": "Select the Laundry service, choose what you need, provide your pickup information and preferred time, and we will handle the rest.",
+      "enabled": true
+    },
+    {
+      "id": "f5",
+      "question": "How can I pay?",
+      "answer": "We accept card payments, bank transfers and USSD. Payment details will be confirmed for each request.",
+      "enabled": true
+    },
+    {
+      "id": "f6",
+      "question": "How do I track my request?",
+      "answer": "Use the Track Order page with your order or request ID to check the current status of your service.",
+      "enabled": true
+    },
+    {
+      "id": "f7",
+      "question": "Can organisations use Tricore?",
+      "answer": "Yes. Tricore offers Business Solutions for offices, schools, hospitals, NGOs, churches, corporate organisations and other institutions.",
+      "enabled": true
+    },
+    {
+      "id": "f8",
+      "question": "Where does Tricore currently operate?",
+      "answer": "Tricore currently operates within its confirmed service areas. Please contact us for the latest coverage information.",
+      "enabled": true
+    }
+  ],
+  "homepage": {
+    "servicesSection": {
+      "tag": "Our Services",
+      "heading": "What Can We Help You With?",
+      "description": "Select a service below to get started."
+    },
+    "howItWorksSection": {
+      "tag": "Simple Process",
+      "heading": "How Tricore Works",
+      "steps": [
+        {
+          "icon": "ClipboardList",
+          "step": "01",
+          "title": "Request",
+          "description": "Tell us what you need."
+        },
+        {
+          "icon": "Phone",
+          "step": "02",
+          "title": "Confirm",
+          "description": "We confirm details and cost."
+        },
+        {
+          "icon": "Package",
+          "step": "03",
+          "title": "Process",
+          "description": "Tricore handles your request."
+        },
+        {
+          "icon": "PartyPopper",
+          "step": "04",
+          "title": "Deliver & Enjoy",
+          "description": "Your service is completed."
+        }
+      ]
+    },
+    "foodSection": {
+      "tag": "Food Service",
+      "heading": "Order From Your Favourite Vendors",
+      "description": "Tricore sources and orders food from restaurants and food vendors on your behalf. Whatever you are craving, we help you get it.",
+      "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80",
+      "categories": [
+        "Restaurants",
+        "Fast Food",
+        "Local Meals",
+        "Snacks",
+        "Drinks",
+        "Breakfast",
+        "Lunch",
+        "Dinner"
+      ],
+      "cta": "Order Food",
+      "ctaHref": "/services/food",
+      "badge": {
+        "value": "100%",
+        "label": "Fresh Meals"
+      }
+    },
+    "groceriesSection": {
+      "tag": "Groceries & Essentials",
+      "heading": "Sourced & Delivered To Your Door",
+      "description": "Everyday groceries and household essentials — tell us what you need and we will source and deliver them to you.",
+      "image": "https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80",
+      "features": [
+        "Fresh produce & pantry staples",
+        "Household & personal care items",
+        "Bulk & family-size orders",
+        "Scheduled or same-day delivery"
+      ],
+      "cta": "Get Groceries",
+      "ctaHref": "/services/groceries",
+      "badge": {
+        "value": "Fast",
+        "label": "Delivery"
+      }
+    },
+    "errandsSection": {
+      "tag": "Errand Service",
+      "heading": "Too Busy? Let Tricore Handle It.",
+      "description": "Delegate your everyday tasks to Tricore. From pick-ups and drop-offs to shopping and document collection.",
+      "image": "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80",
+      "cta": "Request an Errand",
+      "ctaHref": "/services/errands"
+    },
+    "deliverySection": {
+      "tag": "Delivery & Logistics",
+      "heading": "Move Items From Point A to Point B",
+      "description": "Your local delivery and convenience logistics partner. We move items efficiently with care and professionalism.",
+      "image": "https://images.unsplash.com/photo-1616432043562-3671ea2e5242?w=800&q=80",
+      "features": [
+        "Same-day delivery where available",
+        "Scheduled delivery",
+        "Business deliveries",
+        "Order tracking support"
+      ],
+      "cta": "Request Delivery",
+      "ctaHref": "/services/delivery"
+    },
+    "laundrySection": {
+      "tag": "Tricore Laundry",
+      "heading": "Fresh Clothes. Less Stress.",
+      "description": "Professional laundry care designed around your convenience.",
+      "image": "https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=1600&q=80",
+      "services": [
+        "Wash",
+        "Dry",
+        "Fold",
+        "Ironing",
+        "Pickup",
+        "Delivery"
+      ],
+      "cta": "Book Laundry Service",
+      "ctaHref": "/services/laundry"
+    },
+    "businessSection": {
+      "tag": "Business Solutions",
+      "heading": "Convenience for Businesses & Institutions",
+      "description": "Tricore partners with organisations to handle food, groceries, errands, logistics and laundry support.",
+      "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
+      "cta": "Partner With Tricore",
+      "ctaHref": "/services/business"
+    },
+    "whyTricoreSection": {
+      "tag": "Why Choose Us",
+      "heading": "Why Tricore?",
+      "items": [
+        {
+          "icon": "Zap",
+          "title": "Convenience",
+          "description": "One platform for multiple everyday needs."
+        },
+        {
+          "icon": "Shield",
+          "title": "Reliability",
+          "description": "Clear communication and structured processes."
+        },
+        {
+          "icon": "Handshake",
+          "title": "Flexibility",
+          "description": "Different services from a single platform."
+        },
+        {
+          "icon": "Users",
+          "title": "Customer Focus",
+          "description": "Services designed around real customer needs."
+        },
+        {
+          "icon": "Cpu",
+          "title": "Technology",
+          "description": "Technology-enabled ordering and service management."
+        },
+        {
+          "icon": "MapPin",
+          "title": "Local Understanding",
+          "description": "Built for Nigerian customers and communities."
+        }
+      ]
+    },
+    "testimonialsSection": {
+      "tag": "What People Say",
+      "heading": "Trusted by Customers",
+      "description": "Real feedback from people who use Tricore every day."
+    },
+    "faqSection": {
+      "tag": "FAQ",
+      "heading": "Frequently Asked Questions"
+    },
+    "ctaSection": {
+      "heading": "Ready to Simplify Your Day?",
+      "description": "Let Tricore handle your food, errands, delivery, groceries and laundry. One trusted platform for all your everyday convenience needs.",
+      "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1600&q=80",
+      "cta1": "Order / Request a Service",
+      "cta1Href": "/request",
+      "cta2": "Chat With Us"
+    }
+  },
+  "about": {
+    "heroTag": "About Us",
+    "heroHeading": "The Story of Tricore",
+    "heroDescription": "Tricore Foods and Errands was established to simplify everyday living by providing an integrated platform for food ordering, errands, groceries, delivery and related convenience services.",
+    "heroImage": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600&q=80",
+    "storyHeading": "Nourishing Life. Simplifying Living.",
+    "storyParagraphs": [
+      "Tricore is designed around a simple philosophy - making everyday life easier for individuals, families, professionals, businesses and institutions.",
+      "We are not merely a food delivery company. Tricore is a convenience ecosystem built around helping customers obtain what they need and get tasks handled efficiently.",
+      "From food and groceries to errands, delivery, logistics and laundry - Tricore is your one trusted place for everyday convenience."
+    ],
+    "storyImage": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+    "mission": "To simplify everyday living by providing reliable, convenient and technology-enabled food, errand, delivery, logistics and household services.",
+    "vision": "To build an interconnected convenience ecosystem that serves as the go-to platform for everyday needs in Nigerian communities.",
+    "values": [
+      {
+        "icon": "Heart",
+        "title": "Service Excellence",
+        "description": "We are committed to delivering quality service in every interaction."
+      },
+      {
+        "icon": "Lightbulb",
+        "title": "Innovation",
+        "description": "We leverage technology to make everyday life simpler and more efficient."
+      },
+      {
+        "icon": "Users",
+        "title": "Customer Centricity",
+        "description": "Every service is designed around real customer needs and realities."
+      },
+      {
+        "icon": "MapPin",
+        "title": "Local Focus",
+        "description": "We understand and serve the unique needs of Nigerian communities."
+      }
+    ],
+    "philosophyTag": "Service Philosophy",
+    "philosophyHeading": "We Believe in Simplicity",
+    "philosophyDescription": "Everyday tasks should not consume your day. Tricore exists so that individuals, families and organisations can delegate routine tasks and focus on what matters most to them.",
+    "philosophyImage": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
+    "philosophyPillars": [
+      "Trust",
+      "Convenience",
+      "Speed",
+      "Simplicity",
+      "Professionalism",
+      "Local Relevance"
+    ],
+    "leadershipHeading": "Leadership",
+    "leadershipText": "Information about the Tricore leadership team will be shared here once available."
+  },
+  "howItWorksPage": {
+    "heroTag": "How It Works",
+    "heroHeading": "Simple. Convenient. Reliable.",
+    "heroDescription": "Getting started with Tricore is easy. Here is how we handle your requests from start to finish.",
+    "steps": [
+      {
+        "icon": "ClipboardList",
+        "step": "01",
+        "title": "Request",
+        "description": "Tell us what you need. Select a service — food, groceries, errand, delivery, laundry or business — and provide the details."
+      },
+      {
+        "icon": "Phone",
+        "step": "02",
+        "title": "Confirm",
+        "description": "We confirm availability, cost and delivery or service details. You know exactly what to expect."
+      },
+      {
+        "icon": "Package",
+        "step": "03",
+        "title": "Process",
+        "description": "Tricore handles your request with care. Our team coordinates the sourcing, pickup, processing or delivery."
+      },
+      {
+        "icon": "PartyPopper",
+        "step": "04",
+        "title": "Deliver & Enjoy",
+        "description": "Your order or service is completed. You save time and get on with your day."
+      }
+    ],
+    "serviceProcessesHeading": "Service-Specific Processes",
+    "serviceProcesses": [
+      {
+        "title": "Food Ordering",
+        "steps": [
+          "Select food preference",
+          "Share delivery details",
+          "We source from vendor",
+          "Food delivered to you"
+        ]
+      },
+      {
+        "title": "Errands",
+        "steps": [
+          "Describe the errand",
+          "Provide pickup/drop details",
+          "We confirm and process",
+          "Errand completed"
+        ]
+      },
+      {
+        "title": "Delivery",
+        "steps": [
+          "Enter pickup location",
+          "Enter destination",
+          "We assign a rider",
+          "Item delivered safely"
+        ]
+      },
+      {
+        "title": "Groceries",
+        "steps": [
+          "List your items",
+          "Share delivery location",
+          "We source and deliver",
+          "Receive your groceries"
+        ]
+      },
+      {
+        "title": "Laundry",
+        "steps": [
+          "Select laundry service",
+          "Provide pickup info",
+          "We collect and process",
+          "Clean clothes delivered"
+        ]
+      },
+      {
+        "title": "Business Services",
+        "steps": [
+          "Share your needs",
+          "We create a proposal",
+          "Agree on terms",
+          "Ongoing service delivery"
+        ]
+      }
+    ],
+    "ctaHeading": "Ready to Get Started?",
+    "ctaText": "Tell us what you need and we will handle the rest.",
+    "ctaButton": "Order / Request a Service"
+  },
+  "contactPage": {
+    "heroTag": "Contact Us",
+    "heroHeading": "Get in Touch",
+    "heroDescription": "Have a question, need a service or want to partner with us? We are here to help."
+  },
+  "servicesPage": {
+    "heroHeading": "Our Services",
+    "heroDescription": "Tricore is a convenience ecosystem — one platform for multiple everyday needs. Explore what we can do for you."
+  },
+  "footer": {
+    "description": "An integrated Nigerian convenience and lifestyle service.",
+    "companyLinks": [
+      {
+        "label": "About",
+        "href": "/about"
+      },
+      {
+        "label": "How It Works",
+        "href": "/how-it-works"
+      },
+      {
+        "label": "Contact",
+        "href": "/contact"
+      },
+      {
+        "label": "Partner With Us",
+        "href": "/services/business"
+      }
+    ],
+    "supportLinks": [
+      {
+        "label": "Track Order",
+        "href": "/track-order"
+      },
+      {
+        "label": "Customer Support",
+        "href": "/contact"
+      },
+      {
+        "label": "Terms & Conditions",
+        "href": "#"
+      },
+      {
+        "label": "Privacy Policy",
+        "href": "#"
+      }
+    ]
+  }
+}

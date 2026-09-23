@@ -11,6 +11,7 @@ interface ServicePageTemplateProps {
   ctaHref: string;
   categories?: { name: string; items: string[] }[];
   children?: React.ReactNode;
+  whatsapp: { number: string; message: string };
 }
 
 export default function ServicePageTemplate({
@@ -22,6 +23,7 @@ export default function ServicePageTemplate({
   ctaHref,
   categories,
   children,
+  whatsapp,
 }: ServicePageTemplateProps) {
   return (
     <>
@@ -45,7 +47,7 @@ export default function ServicePageTemplate({
                 {ctaText}
                 <ArrowRight className="w-4 h-4" />
               </Link>
-              <WhatsAppCTA />
+              <WhatsAppCTA number={whatsapp.number} message={whatsapp.message} />
             </div>
           </div>
         </div>

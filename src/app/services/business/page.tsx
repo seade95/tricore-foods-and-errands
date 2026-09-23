@@ -2,6 +2,9 @@ import { Metadata } from "next";
 import Link from "next/link";
 import WhatsAppCTA from "@/components/WhatsAppCTA";
 import { CheckCircle } from "lucide-react";
+import { getContent } from "@/lib/store";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Business Solutions",
@@ -34,6 +37,9 @@ const targetOrganisations = [
 ];
 
 export default function BusinessPage() {
+  const content = getContent();
+  const whatsapp = content.whatsapp || { number: "+234XXXXXXXXXX", message: "" };
+
   return (
     <>
       <section className="bg-tricore-black pt-24 pb-20">
@@ -57,7 +63,7 @@ export default function BusinessPage() {
               >
                 Partner With Tricore
               </Link>
-              <WhatsAppCTA />
+              <WhatsAppCTA number={whatsapp.number} message={whatsapp.message} />
             </div>
           </div>
         </div>
@@ -113,7 +119,7 @@ export default function BusinessPage() {
                   >
                     Contact Us
                   </Link>
-                  <WhatsAppCTA />
+                  <WhatsAppCTA number={whatsapp.number} message={whatsapp.message} />
                 </div>
               </div>
             </div>

@@ -43,3 +43,13 @@ auth.js
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# admin uploads (keep dir but ignore files)
+/public/uploads/*
+!/public/uploads/.gitkeep
+
+# server.js no longer ignored (removed static export)
+!server.js
+
+# admin credentials (never commit secrets)
+/data/auth.json

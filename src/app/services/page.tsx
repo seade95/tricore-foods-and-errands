@@ -1,25 +1,33 @@
 import { Metadata } from "next";
-import { siteConfig } from "@/lib/config";
 import ServiceCard from "@/components/ServiceCard";
 import CTASection from "@/components/CTASection";
+import { getContent } from "@/lib/store";
 
-export const metadata: Metadata = {
-  title: "Services",
-  description:
-    "Explore all Tricore services — food ordering, grocery delivery, errands, delivery & logistics, laundry and business solutions.",
-};
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const content = getContent();
+  return {
+    title: "Services",
+    description: content.servicesPage?.heroDescription || "Explore all Tricore services.",
+  };
+}
 
 export default function ServicesPage() {
+  const content = getContent();
+  const services = (content.services || []).filter((s: any) => s.enabled !== false);
+  const sp = content.servicesPage || {};
+  const whatsapp = content.whatsapp || { number: "+234XXXXXXXXXX", message: "" };
+
   return (
     <>
       <section className="bg-tricore-black pt-24 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl sm:text-5xl font-bold text-white mb-5">
-            Our Services
+            {sp.heroHeading || "Our Services"}
           </h1>
           <p className="text-tricore-gray-400 text-lg max-w-2xl mx-auto">
-            Tricore is a convenience ecosystem — one platform for multiple
-            everyday needs. Explore what we can do for you.
+            {sp.heroDescription}
           </p>
         </div>
       </section>
@@ -27,7 +35,7 @@ export default function ServicesPage() {
       <section className="py-16 sm:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {siteConfig.services.map((service) => (
+            {services.map((service: any) => (
               <ServiceCard
                 key={service.id}
                 title={service.title}
@@ -35,13 +43,14 @@ export default function ServicesPage() {
                 cta={service.cta}
                 href={service.href}
                 icon={service.icon}
+                image={service.image}
               />
             ))}
           </div>
         </div>
       </section>
 
-      <CTASection />
+      <CTASection whatsapp={whatsapp} />
     </>
   );
 }

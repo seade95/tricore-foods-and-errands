@@ -1,10 +1,14 @@
 "use client";
 
 import { MessageCircle } from "lucide-react";
-import { siteConfig } from "@/lib/config";
 
-export default function WhatsAppButton() {
-  const url = `https://wa.me/${siteConfig.whatsapp.number.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(siteConfig.whatsapp.message)}`;
+interface WhatsAppButtonProps {
+  number: string;
+  message: string;
+}
+
+export default function WhatsAppButton({ number, message }: WhatsAppButtonProps) {
+  const url = `https://wa.me/${number.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(message)}`;
 
   return (
     <a

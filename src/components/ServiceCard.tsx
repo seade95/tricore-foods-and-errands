@@ -17,21 +17,13 @@ const iconMap: Record<string, React.ElementType> = {
   Building2,
 };
 
-const serviceImages: Record<string, string> = {
-  food: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=80",
-  groceries: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=80",
-  errands: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&q=80",
-  delivery: "https://images.unsplash.com/photo-1616432043562-3671ea2e5242?w=400&q=80",
-  laundry: "https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=400&q=80",
-  business: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=80",
-};
-
 interface ServiceCardProps {
   title: string;
   description: string;
   cta: string;
   href: string;
   icon: string;
+  image?: string;
 }
 
 export default function ServiceCard({
@@ -40,16 +32,16 @@ export default function ServiceCard({
   cta,
   href,
   icon,
+  image,
 }: ServiceCardProps) {
   const Icon = iconMap[icon] || UtensilsCrossed;
-  const imageKey = href.split("/").pop() || "food";
 
   return (
     <Link href={href} className="group block">
       <div className="bg-white rounded-2xl overflow-hidden border border-tricore-gray-200 hover:border-tricore-red/30 hover:shadow-xl transition-all duration-300 h-full flex flex-col">
         <div className="relative h-44 overflow-hidden">
           <img
-            src={serviceImages[imageKey]}
+            src={image || "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=80"}
             alt={title}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             loading="lazy"

@@ -4,70 +4,23 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
-const slides = [
-  {
-    image:
-      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1600&q=80",
-    headline: "Nourishing Life.",
-    sub: "Simplifying Living.",
-    description:
-      "Fresh meals sourced from your favourite restaurants and food vendors — delivered to your door.",
-    cta: "Order Food",
-    ctaHref: "/services/food",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1542838132-92c53300491e?w=1600&q=80",
-    headline: "Groceries & Essentials.",
-    sub: "Sourced & Delivered.",
-    description:
-      "Everyday groceries and household essentials — tell us what you need, we deliver.",
-    cta: "Get Groceries",
-    ctaHref: "/services/groceries",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1600&q=80",
-    headline: "Errands Handled.",
-    sub: "Time Saved.",
-    description:
-      "Pick-ups, drop-offs, shopping, document collection — delegate it all to Tricore.",
-    cta: "Request an Errand",
-    ctaHref: "/services/errands",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=1600&q=80",
-    headline: "Fresh Clothes.",
-    sub: "Less Stress.",
-    description:
-      "Professional laundry care with pickup and delivery — wash, dry, fold and iron.",
-    cta: "Book Laundry",
-    ctaHref: "/services/laundry",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1616432043562-3671ea2e5242?w=1600&q=80",
-    headline: "Delivered Anywhere.",
-    sub: "Fast & Reliable.",
-    description:
-      "Move items efficiently from one location to another with Tricore logistics.",
-    cta: "Request Delivery",
-    ctaHref: "/services/delivery",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=80",
-    headline: "Business Solutions.",
-    sub: "Built for Organisations.",
-    description:
-      "Convenience and logistics support tailored for offices, schools and institutions.",
-    cta: "Partner With Tricore",
-    ctaHref: "/services/business",
-  },
-];
+interface Slide {
+  id?: string;
+  image: string;
+  headline: string;
+  sub: string;
+  description: string;
+  cta: string;
+  ctaHref: string;
+  enabled?: boolean;
+}
 
-export default function HeroSlideshow() {
+interface HeroSlideshowProps {
+  slides: Slide[];
+}
+
+export default function HeroSlideshow({ slides: allSlides }: HeroSlideshowProps) {
+  const slides = allSlides.filter((s) => s.enabled !== false);
   const [current, setCurrent] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
@@ -82,23 +35,27 @@ export default function HeroSlideshow() {
   );
 
   const next = useCallback(() => {
+    if (slides.length === 0) return;
     goTo((current + 1) % slides.length);
-  }, [current, goTo]);
+  }, [current, goTo, slides.length]);
 
   const prev = useCallback(() => {
+    if (slides.length === 0) return;
     goTo((current - 1 + slides.length) % slides.length);
-  }, [current, goTo]);
+  }, [current, goTo, slides.length]);
 
   useEffect(() => {
+    if (slides.length <= 1) return;
     const timer = setInterval(next, 5000);
     return () => clearInterval(timer);
-  }, [next]);
+  }, [next, slides.length]);
 
-  const slide = slides[current];
+  if (slides.length === 0) return null;
+
+  const slide = slides[Math.min(current, slides.length - 1)];
 
   return (
     <section className="relative w-full h-[600px] sm:h-[650px] lg:h-[700px] overflow-hidden bg-tricore-black">
-      {/* Background Images */}
       {slides.map((s, i) => (
         <div
           key={i}
@@ -114,7 +71,6 @@ export default function HeroSlideshow() {
         </div>
       ))}
 
-      {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
         <div className="max-w-2xl">
           <div className="overflow-hidden mb-2">
@@ -166,39 +122,40 @@ export default function HeroSlideshow() {
         </div>
       </div>
 
-      {/* Navigation Arrows */}
-      <button
-        onClick={prev}
-        className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all"
-        aria-label="Previous slide"
-      >
-        <ChevronLeft className="w-5 h-5" />
-      </button>
-      <button
-        onClick={next}
-        className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all"
-        aria-label="Next slide"
-      >
-        <ChevronRight className="w-5 h-5" />
-      </button>
-
-      {/* Dots */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
-        {slides.map((_, i) => (
+      {slides.length > 1 && (
+        <>
           <button
-            key={i}
-            onClick={() => goTo(i)}
-            className={`transition-all duration-300 rounded-full ${
-              i === current
-                ? "w-8 h-2.5 bg-tricore-red"
-                : "w-2.5 h-2.5 bg-white/40 hover:bg-white/60"
-            }`}
-            aria-label={`Go to slide ${i + 1}`}
-          />
-        ))}
-      </div>
+            onClick={prev}
+            className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all"
+            aria-label="Previous slide"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            onClick={next}
+            className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all"
+            aria-label="Next slide"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
 
-      {/* Ecosystem Bar */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goTo(i)}
+                className={`transition-all duration-300 rounded-full ${
+                  i === current
+                    ? "w-8 h-2.5 bg-tricore-red"
+                    : "w-2.5 h-2.5 bg-white/40 hover:bg-white/60"
+                }`}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+
       <div className="absolute bottom-0 left-0 right-0 z-20 bg-black/40 backdrop-blur-md border-t border-white/10 hidden lg:block">
         <div className="max-w-7xl mx-auto px-8 py-3 flex items-center justify-center gap-6">
           {["Food", "Groceries", "Errands", "Delivery", "Laundry", "Business"].map(
