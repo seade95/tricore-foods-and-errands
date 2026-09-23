@@ -1,14 +1,39 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Loader2 } from "lucide-react";
 
 export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    setError("");
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const data: Record<string, string> = {};
+    fd.forEach((value, key) => {
+      data[key] = String(value);
+    });
+    data.type = "contact";
+    try {
+      const res = await fetch("/api/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({ error: "Failed to send" }));
+        throw new Error(body.error || "Failed to send");
+      }
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to send message");
+    }
+    setSubmitting(false);
   };
 
   if (submitted) {
@@ -28,20 +53,20 @@ export default function ContactForm() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
           <label className="block text-sm font-medium text-tricore-black mb-1.5">Full Name *</label>
-          <input type="text" required className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none" placeholder="Your name" />
+          <input name="name" type="text" required className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none" placeholder="Your name" />
         </div>
         <div>
           <label className="block text-sm font-medium text-tricore-black mb-1.5">Phone Number *</label>
-          <input type="tel" required className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none" placeholder="+234..." />
+          <input name="phone" type="tel" required className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none" placeholder="+234..." />
         </div>
       </div>
       <div>
         <label className="block text-sm font-medium text-tricore-black mb-1.5">Email Address</label>
-        <input type="email" className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none" placeholder="your@email.com" />
+        <input name="email" type="email" className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none" placeholder="your@email.com" />
       </div>
       <div>
         <label className="block text-sm font-medium text-tricore-black mb-1.5">Subject</label>
-        <select className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none">
+        <select name="subject" className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none">
           <option value="">Select a topic</option>
           <option value="general">General Enquiry</option>
           <option value="food">Food Service</option>
@@ -55,10 +80,12 @@ export default function ContactForm() {
       </div>
       <div>
         <label className="block text-sm font-medium text-tricore-black mb-1.5">Message *</label>
-        <textarea rows={5} required className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none resize-none" placeholder="How can we help you?" />
+        <textarea name="message" rows={5} required className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none resize-none" placeholder="How can we help you?" />
       </div>
-      <button type="submit" className="w-full bg-tricore-red text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-tricore-red-dark transition-colors">
-        Send Message
+      {error && <p className="text-red-600 text-sm">{error}</p>}
+      <button type="submit" disabled={submitting} className="w-full bg-tricore-red text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-tricore-red-dark transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
+        {submitting && <Loader2 className="w-4 h-4 animate-spin" />}
+        {submitting ? "Sending..." : "Send Message"}
       </button>
     </form>
   );

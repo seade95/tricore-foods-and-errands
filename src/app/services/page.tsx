@@ -2,11 +2,12 @@ import { Metadata } from "next";
 import ServiceCard from "@/components/ServiceCard";
 import CTASection from "@/components/CTASection";
 import { getContent } from "@/lib/store";
+import type { Content, Service } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const content = getContent();
+  const content = getContent() as Content;
   return {
     title: "Services",
     description: content.servicesPage?.heroDescription || "Explore all Tricore services.",
@@ -14,9 +15,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function ServicesPage() {
-  const content = getContent();
-  const services = (content.services || []).filter((s: any) => s.enabled !== false);
-  const sp = content.servicesPage || {};
+  const content = getContent() as Content;
+  const services = (content.services || []).filter((s: Service) => s.enabled !== false);
+  const sp = content.servicesPage || ({} as Content["servicesPage"]);
   const whatsapp = content.whatsapp || { number: "+234XXXXXXXXXX", message: "" };
 
   return (
@@ -35,7 +36,7 @@ export default function ServicesPage() {
       <section className="py-16 sm:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service: any) => (
+            {services.map((service) => (
               <ServiceCard
                 key={service.id}
                 title={service.title}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   UtensilsCrossed,
   ShoppingBasket,
@@ -40,11 +41,12 @@ export default function ServiceCard({
     <Link href={href} className="group block">
       <div className="bg-white rounded-2xl overflow-hidden border border-tricore-gray-200 hover:border-tricore-red/30 hover:shadow-xl transition-all duration-300 h-full flex flex-col">
         <div className="relative h-44 overflow-hidden">
-          <img
+          <Image
             src={image || "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=80"}
             alt={title}
+            width={800}
+            height={440}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
           <div className="absolute bottom-4 left-4 w-10 h-10 bg-tricore-red rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">

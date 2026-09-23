@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import RequestForm from "@/components/RequestForm";
 
 export const metadata: Metadata = {
@@ -57,7 +58,7 @@ export default function ErrandsPage() {
             </div>
             <div className="order-1 lg:order-2 relative">
               <div className="rounded-3xl overflow-hidden shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80" alt="Person handling errands" className="w-full h-[400px] object-cover" loading="lazy" />
+                <Image src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80" alt="Person handling errands" width={800} height={400} className="w-full h-[400px] object-cover" />
               </div>
               <div className="absolute -bottom-6 -left-6 bg-tricore-red text-white rounded-2xl p-4 shadow-xl hidden sm:block">
                 <p className="text-2xl font-bold">Any Task</p>

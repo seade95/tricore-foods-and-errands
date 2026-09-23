@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -22,33 +22,37 @@ interface HeroSlideshowProps {
 export default function HeroSlideshow({ slides: allSlides }: HeroSlideshowProps) {
   const slides = allSlides.filter((s) => s.enabled !== false);
   const [current, setCurrent] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const lockRef = useRef(false);
 
-  const goTo = useCallback(
-    (index: number) => {
-      if (isTransitioning) return;
-      setIsTransitioning(true);
-      setCurrent(index);
-      setTimeout(() => setIsTransitioning(false), 600);
-    },
-    [isTransitioning]
-  );
+  const goTo = useCallback((index: number) => {
+    if (lockRef.current) return;
+    lockRef.current = true;
+    setCurrent(index);
+    setTimeout(() => {
+      lockRef.current = false;
+    }, 600);
+  }, []);
 
   const next = useCallback(() => {
     if (slides.length === 0) return;
+    if (lockRef.current) return;
     goTo((current + 1) % slides.length);
   }, [current, goTo, slides.length]);
 
   const prev = useCallback(() => {
     if (slides.length === 0) return;
+    if (lockRef.current) return;
     goTo((current - 1 + slides.length) % slides.length);
   }, [current, goTo, slides.length]);
 
   useEffect(() => {
     if (slides.length <= 1) return;
-    const timer = setInterval(next, 5000);
+    const timer = setInterval(() => {
+      if (lockRef.current) return;
+      setCurrent((c) => (c + 1) % slides.length);
+    }, 5000);
     return () => clearInterval(timer);
-  }, [next, slides.length]);
+  }, [slides.length]);
 
   if (slides.length === 0) return null;
 

@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import CTASection from "@/components/CTASection";
 import { getContent } from "@/lib/store";
+import type { Content, StepItem } from "@/lib/types";
 import {
   ClipboardList,
   Phone,
@@ -22,10 +23,10 @@ export async function generateMetadata(): Promise<Metadata> {
 const stepIcons: Record<string, React.ElementType> = { ClipboardList, Phone, Package, PartyPopper };
 
 export default function HowItWorksPage() {
-  const content = getContent();
-  const hiw = content.howItWorksPage || {};
+  const content = getContent() as Content;
+  const hiw = content.howItWorksPage || ({} as Content["howItWorksPage"]);
   const whatsapp = content.whatsapp || { number: "+234XXXXXXXXXX", message: "" };
-  const steps = (hiw.steps || []).map((s: any) => ({
+  const steps = (hiw.steps || []).map((s: StepItem) => ({
     icon: stepIcons[s.icon] || ClipboardList,
     step: s.step,
     title: s.title,
@@ -45,7 +46,7 @@ export default function HowItWorksPage() {
       <section className="py-16 sm:py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-12">
-            {steps.map((item: any, i: number) => (
+            {steps.map((item, i) => (
               <div key={item.step} className={`flex flex-col sm:flex-row items-center gap-8 ${i % 2 === 1 ? "sm:flex-row-reverse" : ""}`}>
                 <div className="flex-1">
                   <span className="text-tricore-red font-bold text-xs tracking-wider uppercase">Step {item.step}</span>
@@ -65,11 +66,11 @@ export default function HowItWorksPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl sm:text-3xl font-bold text-tricore-black text-center mb-10">{hiw.serviceProcessesHeading}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(hiw.serviceProcesses || []).map((service: any) => (
+            {(hiw.serviceProcesses || []).map((service) => (
               <div key={service.title} className="bg-white rounded-2xl p-6 border border-tricore-gray-200">
                 <h3 className="font-bold text-tricore-black mb-4">{service.title}</h3>
                 <div className="space-y-3">
-                  {service.steps.map((step: string, j: number) => (
+                  {(service.steps || []).map((step: string, j: number) => (
                     <div key={j} className="flex items-center gap-3">
                       <span className="w-6 h-6 bg-tricore-red-light rounded-full flex items-center justify-center text-tricore-red text-xs font-bold shrink-0">{j + 1}</span>
                       <span className="text-tricore-gray-600 text-sm">{step}</span>

@@ -28,13 +28,7 @@ export default function CTASection({
       <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-tricore-red/10 rounded-full blur-3xl pointer-events-none" />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-5">
-          {heading.includes("Your Day") ? (
-            <>
-              Ready to Simplify <span className="text-tricore-red">Your Day?</span>
-            </>
-          ) : (
-            heading
-          )}
+          {heading}
         </h2>
         <p className="text-tricore-gray-400 text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
           {description}

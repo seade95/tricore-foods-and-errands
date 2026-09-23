@@ -3,6 +3,7 @@
 import { useContent } from "@/components/admin/hooks";
 import { AdminPageHeader, AdminInput, AdminTextarea, AdminToggle, AdminCard, SaveBar, LoadingSpinner, ToastDisplay } from "@/components/admin/ui";
 import { CreditCard, Plus, Trash2 } from "lucide-react";
+import type { PaymentMethod } from "@/lib/types";
 
 export default function AdminPaymentPage() {
   const { content, loading, saving, toast, save, update } = useContent();
@@ -11,31 +12,31 @@ export default function AdminPaymentPage() {
 
   const p = content.payment;
 
-  const updateMethod = (id: string, patch: any) => {
-    update((c: any) => ({
+  const updateMethod = (id: string, patch: Partial<PaymentMethod>) => {
+    update((c) => ({
       ...c,
       payment: {
         ...c.payment,
-        methods: c.payment.methods.map((m: any) => (m.id === id ? { ...m, ...patch } : m)),
+        methods: (c.payment.methods || []).map((m) => (m.id === id ? { ...m, ...patch } : m)),
       },
     }));
   };
 
   const addMethod = () => {
     const id = `method-${Date.now()}`;
-    update((c: any) => ({
+    update((c) => ({
       ...c,
       payment: {
         ...c.payment,
-        methods: [...c.payment.methods, { id, name: "", enabled: true, instructions: "" }],
+        methods: [...(c.payment.methods || []), { id, name: "", enabled: true, instructions: "" }],
       },
     }));
   };
 
   const removeMethod = (id: string) => {
-    update((c: any) => ({
+    update((c) => ({
       ...c,
-      payment: { ...c.payment, methods: c.payment.methods.filter((m: any) => m.id !== id) },
+      payment: { ...c.payment, methods: (c.payment.methods || []).filter((m) => m.id !== id) },
     }));
   };
 
@@ -50,13 +51,13 @@ export default function AdminPaymentPage() {
             <AdminToggle
               label="Enable Payment Section"
               value={p.enabled}
-              onChange={(v) => update((c: any) => ({ ...c, payment: { ...c.payment, enabled: v } }))}
+              onChange={(v) => update((c) => ({ ...c, payment: { ...c.payment, enabled: v } }))}
               hint="Show payment methods to customers"
             />
             <AdminTextarea
               label="Payment Note"
               value={p.note}
-              onChange={(v) => update((c: any) => ({ ...c, payment: { ...c.payment, note: v } }))}
+              onChange={(v) => update((c) => ({ ...c, payment: { ...c.payment, note: v } }))}
               rows={2}
               hint="General note shown with payment methods"
             />
@@ -65,7 +66,7 @@ export default function AdminPaymentPage() {
 
         <AdminCard title="Payment Methods" description="Add, edit or remove payment options">
           <div className="space-y-4">
-            {p.methods.map((m: any) => (
+            {p.methods.map((m) => (
               <div key={m.id} className="border border-tricore-gray-200 rounded-xl p-4 space-y-4">
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">

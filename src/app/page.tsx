@@ -1,9 +1,11 @@
 import Link from "next/link";
+import Image from "next/image";
 import ServiceCard from "@/components/ServiceCard";
 import CTASection from "@/components/CTASection";
 import FAQ from "@/components/FAQ";
 import HeroSlideshow from "@/components/HeroSlideshow";
 import { getContent } from "@/lib/store";
+import type { Content, IconTextItem, Slide, Service, Testimonial, FaqItem, StepItem } from "@/lib/types";
 import {
   ArrowRight,
   CheckCircle,
@@ -36,19 +38,19 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 export default function Home() {
-  const content = getContent();
+  const content = getContent() as Content;
   const hp = content.homepage;
   const whatsapp = content.whatsapp || { number: "+234XXXXXXXXXX", message: "" };
-  const slides = (content.slides || []).filter((s: any) => s.enabled !== false);
-  const services = (content.services || []).filter((s: any) => s.enabled !== false);
-  const testimonials = (content.testimonials || []).filter((t: any) => t.enabled !== false);
-  const faqItems = (content.faq || []).filter((f: any) => f.enabled !== false);
-  const whyItems = (hp?.whyTricoreSection?.items || []).map((item: any) => ({
+  const slides = (content.slides || []).filter((s: Slide) => s.enabled !== false);
+  const services = (content.services || []).filter((s: Service) => s.enabled !== false);
+  const testimonials = (content.testimonials || []).filter((t: Testimonial) => t.enabled !== false);
+  const faqItems = (content.faq || []).filter((f: FaqItem) => f.enabled !== false);
+  const whyItems = (hp?.whyTricoreSection?.items || []).map((item: IconTextItem) => ({
     icon: iconMap[item.icon] || Zap,
     title: item.title,
     description: item.description,
   }));
-  const howSteps = (hp?.howItWorksSection?.steps || []).map((step: any) => ({
+  const howSteps = (hp?.howItWorksSection?.steps || []).map((step: StepItem) => ({
     icon: iconMap[step.icon] || ClipboardList,
     step: step.step,
     title: step.title,
@@ -69,7 +71,7 @@ export default function Home() {
             <p className="text-tricore-gray-600 text-base max-w-xl mx-auto leading-relaxed">{hp?.servicesSection?.description || "Select a service below to get started."}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service: any) => (
+            {services.map((service) => (
               <ServiceCard key={service.id} title={service.title} description={service.shortDescription} cta={service.cta} href={service.href} icon={service.icon} image={service.image} />
             ))}
           </div>
@@ -85,7 +87,7 @@ export default function Home() {
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-tricore-black mb-4">{hp?.howItWorksSection?.heading || "How Tricore Works"}</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {howSteps.map((item: any, idx: number) => (
+            {howSteps.map((item, idx) => (
               <div key={item.step} className="relative text-center group">
                 {idx < 3 && <div className="hidden lg:block absolute top-7 left-[60%] w-[80%] h-px bg-tricore-gray-200" />}
                 <div className="w-14 h-14 bg-tricore-red-light rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:bg-tricore-red group-hover:scale-110 transition-all duration-300">
@@ -106,7 +108,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="relative">
               <div className="rounded-3xl overflow-hidden shadow-2xl">
-                <img src={hp?.foodSection?.image} alt="Delicious food" className="w-full h-[400px] object-cover" loading="lazy" />
+                <Image src={hp?.foodSection?.image} alt="Delicious food" width={800} height={400} className="w-full h-[400px] object-cover" />
               </div>
               <div className="absolute -bottom-6 -right-6 bg-tricore-red text-white rounded-2xl p-4 shadow-xl hidden sm:block">
                 <p className="text-2xl font-bold">{hp?.foodSection?.badge?.value}</p>
@@ -136,7 +138,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="relative">
               <div className="rounded-3xl overflow-hidden shadow-2xl">
-                <img src={hp?.groceriesSection?.image} alt="Fresh groceries" className="w-full h-[400px] object-cover" loading="lazy" />
+                <Image src={hp?.groceriesSection?.image} alt="Fresh groceries" width={800} height={400} className="w-full h-[400px] object-cover" />
               </div>
               <div className="absolute -bottom-6 -left-6 bg-tricore-red text-white rounded-2xl p-4 shadow-xl hidden sm:block">
                 <p className="text-2xl font-bold">{hp?.groceriesSection?.badge?.value}</p>
@@ -177,7 +179,7 @@ export default function Home() {
             </div>
             <div className="order-1 lg:order-2 relative">
               <div className="rounded-3xl overflow-hidden shadow-2xl">
-                <img src={hp?.errandsSection?.image} alt="Errand handling" className="w-full h-[400px] object-cover" loading="lazy" />
+                <Image src={hp?.errandsSection?.image} alt="Errand handling" width={800} height={400} className="w-full h-[400px] object-cover" />
               </div>
             </div>
           </div>
@@ -190,7 +192,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="relative">
               <div className="rounded-3xl overflow-hidden shadow-2xl">
-                <img src={hp?.deliverySection?.image} alt="Delivery logistics" className="w-full h-[400px] object-cover" loading="lazy" />
+                <Image src={hp?.deliverySection?.image} alt="Delivery logistics" width={800} height={400} className="w-full h-[400px] object-cover" />
               </div>
             </div>
             <div>
@@ -257,7 +259,7 @@ export default function Home() {
             </div>
             <div className="order-1 lg:order-2 relative">
               <div className="rounded-3xl overflow-hidden shadow-2xl">
-                <img src={hp?.businessSection?.image} alt="Business solutions" className="w-full h-[400px] object-cover" loading="lazy" />
+                <Image src={hp?.businessSection?.image} alt="Business solutions" width={800} height={400} className="w-full h-[400px] object-cover" />
               </div>
             </div>
           </div>
@@ -272,7 +274,7 @@ export default function Home() {
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-tricore-black mb-4">{hp?.whyTricoreSection?.heading}</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {whyItems.map((item: any) => (
+            {whyItems.map((item) => (
               <div key={item.title} className="bg-white rounded-2xl p-7 border border-tricore-gray-200 hover:border-tricore-red/30 hover:shadow-xl transition-all duration-300 group">
                 <div className="w-12 h-12 bg-tricore-red-light rounded-xl flex items-center justify-center mb-5 group-hover:bg-tricore-red group-hover:scale-110 transition-all duration-300">
                   <item.icon className="w-6 h-6 text-tricore-red group-hover:text-white transition-colors" />
@@ -295,18 +297,18 @@ export default function Home() {
             <p className="text-tricore-gray-600 text-base max-w-xl mx-auto leading-relaxed">{hp?.testimonialsSection?.description}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {testimonials.map((t: any) => (
+            {testimonials.map((t) => (
               <div key={t.id} className="bg-white rounded-2xl p-8 border border-tricore-gray-200 hover:border-tricore-red/30 hover:shadow-xl transition-all duration-300 relative">
                 <div className="absolute top-6 right-6 text-tricore-red/10 text-6xl font-serif leading-none">&ldquo;</div>
                 <div className="flex gap-1 mb-4">
-                  {Array.from({ length: t.rating }).map((_: any, i: number) => (
+                  {Array.from({ length: Math.min(5, Math.max(1, Number(t.rating) || 5)) }).map((_, i) => (
                     <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
                 <p className="text-tricore-gray-600 text-sm leading-relaxed mb-6 relative z-10">{t.quote}</p>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-tricore-red-light flex items-center justify-center text-tricore-red font-bold text-sm">
-                    {t.name.charAt(0)}
+                    {(t.name || "?").charAt(0)}
                   </div>
                   <div>
                     <p className="font-semibold text-tricore-black text-sm">{t.name}</p>

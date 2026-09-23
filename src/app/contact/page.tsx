@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import WhatsAppCTA from "@/components/WhatsAppCTA";
 import ContactForm from "@/components/ContactForm";
 import { getContent } from "@/lib/store";
+import type { Content, SocialKey } from "@/lib/types";
 import { Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -14,12 +15,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function ContactPage() {
-  const content = getContent();
-  const c = content.contact || {};
+  const content = getContent() as Content;
+  const c = content.contact || ({} as Content["contact"]);
   const w = content.whatsapp || { number: "+234XXXXXXXXXX", message: "" };
   const so = content.social || {};
-  const cp = content.contactPage || {};
-  const socialKeys = ["facebook", "instagram", "tiktok", "linkedin", "twitter", "youtube"];
+  const cp = content.contactPage || ({} as Content["contactPage"]);
+  const socialKeys: SocialKey[] = ["facebook", "instagram", "tiktok", "linkedin", "twitter", "youtube"];
 
   return (
     <>

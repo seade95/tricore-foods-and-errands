@@ -1,14 +1,39 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Loader2 } from "lucide-react";
 
 export default function BusinessForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    setError("");
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const data: Record<string, string> = {};
+    fd.forEach((value, key) => {
+      data[key] = String(value);
+    });
+    data.type = "business";
+    try {
+      const res = await fetch("/api/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({ error: "Failed to send" }));
+        throw new Error(body.error || "Failed to send");
+      }
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to send request");
+    }
+    setSubmitting(false);
   };
 
   if (submitted) {
@@ -28,26 +53,26 @@ export default function BusinessForm() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
           <label className="block text-sm font-medium text-tricore-black mb-1.5">Organisation Name *</label>
-          <input type="text" required className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none" placeholder="Company or organisation name" />
+          <input name="organisation" type="text" required className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none" placeholder="Company or organisation name" />
         </div>
         <div>
           <label className="block text-sm font-medium text-tricore-black mb-1.5">Contact Person *</label>
-          <input type="text" required className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none" placeholder="Full name" />
+          <input name="contactPerson" type="text" required className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none" placeholder="Full name" />
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
           <label className="block text-sm font-medium text-tricore-black mb-1.5">Phone Number *</label>
-          <input type="tel" required className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none" placeholder="+234..." />
+          <input name="phone" type="tel" required className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none" placeholder="+234..." />
         </div>
         <div>
           <label className="block text-sm font-medium text-tricore-black mb-1.5">Email *</label>
-          <input type="email" required className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none" placeholder="email@organisation.com" />
+          <input name="email" type="email" required className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none" placeholder="email@organisation.com" />
         </div>
       </div>
       <div>
         <label className="block text-sm font-medium text-tricore-black mb-1.5">Organisation Type</label>
-        <select className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none">
+        <select name="orgType" className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none">
           <option value="">Select type</option>
           <option value="office">Office</option>
           <option value="school">School</option>
@@ -61,10 +86,12 @@ export default function BusinessForm() {
       </div>
       <div>
         <label className="block text-sm font-medium text-tricore-black mb-1.5">Services Needed</label>
-        <textarea rows={4} className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none resize-none" placeholder="Tell us what services your organisation needs..." />
+        <textarea name="services" rows={4} className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none resize-none" placeholder="Tell us what services your organisation needs..." />
       </div>
-      <button type="submit" className="w-full bg-tricore-red text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-tricore-red-dark transition-colors">
-        Submit Partnership Request
+      {error && <p className="text-red-600 text-sm">{error}</p>}
+      <button type="submit" disabled={submitting} className="w-full bg-tricore-red text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-tricore-red-dark transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
+        {submitting && <Loader2 className="w-4 h-4 animate-spin" />}
+        {submitting ? "Submitting..." : "Submit Partnership Request"}
       </button>
     </form>
   );

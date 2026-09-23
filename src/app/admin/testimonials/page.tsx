@@ -3,6 +3,7 @@
 import { useContent } from "@/components/admin/hooks";
 import { AdminPageHeader, AdminInput, AdminTextarea, AdminToggle, AdminCard, SaveBar, LoadingSpinner, ToastDisplay } from "@/components/admin/ui";
 import { MessageSquareQuote, Plus, Trash2, Star } from "lucide-react";
+import type { Testimonial } from "@/lib/types";
 
 export default function AdminTestimonialsPage() {
   const { content, loading, saving, toast, save, update } = useContent();
@@ -11,25 +12,25 @@ export default function AdminTestimonialsPage() {
 
   const items = content.testimonials || [];
 
-  const updateItem = (id: string, patch: any) => {
-    update((c: any) => ({
+  const updateItem = (id: string, patch: Partial<Testimonial>) => {
+    update((c) => ({
       ...c,
-      testimonials: c.testimonials.map((t: any) => (t.id === id ? { ...t, ...patch } : t)),
+      testimonials: (c.testimonials || []).map((t) => (t.id === id ? { ...t, ...patch } : t)),
     }));
   };
 
   const addItem = () => {
-    update((c: any) => ({
+    update((c) => ({
       ...c,
       testimonials: [
-        ...c.testimonials,
+        ...(c.testimonials || []),
         { id: `t-${Date.now()}`, name: "", role: "", quote: "", rating: 5, enabled: true },
       ],
     }));
   };
 
   const removeItem = (id: string) => {
-    update((c: any) => ({ ...c, testimonials: c.testimonials.filter((t: any) => t.id !== id) }));
+    update((c) => ({ ...c, testimonials: (c.testimonials || []).filter((t) => t.id !== id) }));
   };
 
   return (
@@ -49,11 +50,11 @@ export default function AdminTestimonialsPage() {
           </button>
         </div>
 
-        {items.map((t: any) => (
+        {items.map((t) => (
           <AdminCard key={t.id} title={t.name || "New Testimonial"}>
             <div className="space-y-5">
               <div className="flex items-center justify-between">
-                <AdminToggle label={t.enabled ? "Visible" : "Hidden"} value={t.enabled} onChange={(v) => updateItem(t.id, { enabled: v })} />
+                <AdminToggle label={t.enabled ? "Visible" : "Hidden"} value={t.enabled !== false} onChange={(v) => updateItem(t.id, { enabled: v })} />
                 <button onClick={() => removeItem(t.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
                   <Trash2 className="w-4 h-4" />
                 </button>

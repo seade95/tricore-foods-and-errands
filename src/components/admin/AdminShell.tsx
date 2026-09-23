@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -16,6 +17,7 @@ import {
   FolderOpen,
   KeyRound,
   LogOut,
+  Inbox,
 } from "lucide-react";
 
 const navItems = [
@@ -30,17 +32,39 @@ const navItems = [
   { href: "/admin/content", label: "Page Content", icon: FileText },
   { href: "/admin/navigation", label: "Navigation & Footer", icon: Navigation },
   { href: "/admin/media", label: "Media Library", icon: FolderOpen },
+  { href: "/admin/submissions", label: "Submissions", icon: Inbox },
   { href: "/admin/password", label: "Change Password", icon: KeyRound },
 ];
 
 export default function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const isLogin = pathname === "/admin/login";
+
+  useEffect(() => {
+    if (isLogin) return;
+    let cancelled = false;
+    fetch("/api/auth/session")
+      .then(async (r) => {
+        const data = await r.json().catch(() => ({ authenticated: false }));
+        if (!cancelled && !data.authenticated) {
+          router.replace("/admin/login");
+        }
+      })
+      .catch(() => {
+        if (!cancelled) router.replace("/admin/login");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [isLogin, router]);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
     router.push("/admin/login");
   };
+
+  if (isLogin) return <>{children}</>;
 
   return (
     <div className="min-h-screen bg-tricore-gray-50 flex">

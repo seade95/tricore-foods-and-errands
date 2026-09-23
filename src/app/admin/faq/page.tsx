@@ -3,6 +3,7 @@
 import { useContent } from "@/components/admin/hooks";
 import { AdminPageHeader, AdminTextarea, AdminInput, AdminToggle, AdminCard, SaveBar, LoadingSpinner, ToastDisplay } from "@/components/admin/ui";
 import { HelpCircle, Plus, Trash2 } from "lucide-react";
+import type { FaqItem } from "@/lib/types";
 
 export default function AdminFAQPage() {
   const { content, loading, saving, toast, save, update } = useContent();
@@ -11,27 +12,27 @@ export default function AdminFAQPage() {
 
   const items = content.faq || [];
 
-  const updateItem = (id: string, patch: any) => {
-    update((c: any) => ({
+  const updateItem = (id: string, patch: Partial<FaqItem>) => {
+    update((c) => ({
       ...c,
-      faq: c.faq.map((f: any) => (f.id === id ? { ...f, ...patch } : f)),
+      faq: (c.faq || []).map((f) => (f.id === id ? { ...f, ...patch } : f)),
     }));
   };
 
   const addItem = () => {
-    update((c: any) => ({
+    update((c) => ({
       ...c,
-      faq: [...c.faq, { id: `f-${Date.now()}`, question: "", answer: "", enabled: true }],
+      faq: [...(c.faq || []), { id: `f-${Date.now()}`, question: "", answer: "", enabled: true }],
     }));
   };
 
   const removeItem = (id: string) => {
-    update((c: any) => ({ ...c, faq: c.faq.filter((f: any) => f.id !== id) }));
+    update((c) => ({ ...c, faq: (c.faq || []).filter((f) => f.id !== id) }));
   };
 
   const move = (index: number, dir: -1 | 1) => {
-    update((c: any) => {
-      const arr = [...c.faq];
+    update((c) => {
+      const arr = [...(c.faq || [])];
       const target = index + dir;
       if (target < 0 || target >= arr.length) return c;
       [arr[index], arr[target]] = [arr[target], arr[index]];
@@ -56,11 +57,11 @@ export default function AdminFAQPage() {
           </button>
         </div>
 
-        {items.map((item: any, i: number) => (
+        {items.map((item, i) => (
           <AdminCard key={item.id} title={`Q${i + 1}`}>
             <div className="space-y-5">
               <div className="flex items-center justify-between">
-                <AdminToggle label={item.enabled ? "Visible" : "Hidden"} value={item.enabled} onChange={(v) => updateItem(item.id, { enabled: v })} />
+                <AdminToggle label={item.enabled ? "Visible" : "Hidden"} value={item.enabled !== false} onChange={(v) => updateItem(item.id, { enabled: v })} />
                 <div className="flex items-center gap-1">
                   <button onClick={() => move(i, -1)} disabled={i === 0} className="px-2 py-1 text-xs text-tricore-gray-500 hover:text-tricore-black disabled:opacity-30">↑</button>
                   <button onClick={() => move(i, 1)} disabled={i === items.length - 1} className="px-2 py-1 text-xs text-tricore-gray-500 hover:text-tricore-black disabled:opacity-30">↓</button>

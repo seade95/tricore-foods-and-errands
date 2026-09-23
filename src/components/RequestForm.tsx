@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Send, CheckCircle } from "lucide-react";
+import { Send, CheckCircle, Loader2 } from "lucide-react";
 
 const serviceTypes = [
   { value: "food", label: "Food" },
@@ -16,10 +16,36 @@ const serviceTypes = [
 export default function RequestForm() {
   const [submitted, setSubmitted] = useState(false);
   const [serviceType, setServiceType] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    setError("");
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const data: Record<string, string> = {};
+    fd.forEach((value, key) => {
+      data[key] = String(value);
+    });
+    data.type = "request";
+    data.serviceType = serviceType;
+    try {
+      const res = await fetch("/api/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({ error: "Failed to send" }));
+        throw new Error(body.error || "Failed to send");
+      }
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to submit request");
+    }
+    setSubmitting(false);
   };
 
   if (submitted) {
@@ -48,6 +74,7 @@ export default function RequestForm() {
         </label>
         <select
           id="serviceType"
+          name="serviceType"
           required
           value={serviceType}
           onChange={(e) => setServiceType(e.target.value)}
@@ -73,6 +100,7 @@ export default function RequestForm() {
           <input
             type="text"
             id="name"
+            name="name"
             required
             className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none transition-colors"
             placeholder="Your name"
@@ -88,6 +116,7 @@ export default function RequestForm() {
           <input
             type="tel"
             id="phone"
+            name="phone"
             required
             className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none transition-colors"
             placeholder="+234..."
@@ -105,6 +134,7 @@ export default function RequestForm() {
         <input
           type="email"
           id="email"
+          name="email"
           className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none transition-colors"
           placeholder="your@email.com"
         />
@@ -120,6 +150,7 @@ export default function RequestForm() {
         <input
           type="text"
           id="location"
+          name="location"
           required
           className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none transition-colors"
           placeholder="Your location"
@@ -137,6 +168,7 @@ export default function RequestForm() {
           <input
             type="text"
             id="errandDetails"
+            name="errandDetails"
             required
             className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none transition-colors"
             placeholder="Pick-up, drop-off, shopping, document collection..."
@@ -156,6 +188,7 @@ export default function RequestForm() {
             <input
               type="text"
               id="pickup"
+              name="pickup"
               required
               className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none transition-colors"
               placeholder="Pickup address"
@@ -171,6 +204,7 @@ export default function RequestForm() {
             <input
               type="text"
               id="destination"
+              name="destination"
               required
               className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none transition-colors"
               placeholder="Delivery address"
@@ -189,6 +223,7 @@ export default function RequestForm() {
           </label>
           <select
             id="laundryService"
+            name="laundryService"
             required
             className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none transition-colors"
           >
@@ -211,6 +246,7 @@ export default function RequestForm() {
         </label>
         <textarea
           id="details"
+          name="details"
           rows={4}
           className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none transition-colors resize-none"
           placeholder="Tell us more about what you need..."
@@ -227,17 +263,21 @@ export default function RequestForm() {
         <input
           type="text"
           id="preferredTime"
+          name="preferredTime"
           className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none transition-colors"
           placeholder="e.g. Today 3pm, Tomorrow morning"
         />
       </div>
 
+      {error && <p className="text-red-600 text-sm">{error}</p>}
+
       <button
         type="submit"
-        className="w-full flex items-center justify-center gap-2 bg-tricore-red text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-tricore-red-dark transition-colors"
+        disabled={submitting}
+        className="w-full flex items-center justify-center gap-2 bg-tricore-red text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-tricore-red-dark transition-colors disabled:opacity-50"
       >
-        <Send className="w-4 h-4" />
-        Submit Request
+        {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+        {submitting ? "Submitting..." : "Submit Request"}
       </button>
     </form>
   );

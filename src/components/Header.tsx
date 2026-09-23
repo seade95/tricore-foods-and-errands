@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 
 interface NavItem {
@@ -50,7 +51,7 @@ export default function Header({ site, navLinks, services }: HeaderProps) {
         <div className="flex items-center justify-between h-16 lg:h-20">
           <Link href="/" className="flex items-center gap-2.5 group">
             {s.logo ? (
-              <img src={s.logo} alt={s.name} className="h-10 w-auto" />
+              <Image src={s.logo} alt={s.name} width={40} height={40} className="h-10 w-auto" />
             ) : (
               <div className="w-10 h-10 bg-tricore-red rounded-xl flex items-center justify-center shadow-lg shadow-tricore-red/20 group-hover:shadow-tricore-red/40 transition-shadow">
                 <span className="text-white font-bold text-xl">T</span>

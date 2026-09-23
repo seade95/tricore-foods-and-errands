@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
+import TrackOrderForm from "@/components/TrackOrderForm";
 
 export const metadata: Metadata = {
   title: "Delivery & Logistics",
@@ -59,7 +61,7 @@ export default function DeliveryPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="relative">
               <div className="rounded-3xl overflow-hidden shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1616432043562-3671ea2e5242?w=800&q=80" alt="Delivery rider on motorcycle" className="w-full h-[400px] object-cover" loading="lazy" />
+                <Image src="https://images.unsplash.com/photo-1616432043562-3671ea2e5242?w=800&q=80" alt="Delivery rider on motorcycle" width={800} height={400} className="w-full h-[400px] object-cover" />
               </div>
               <div className="absolute -bottom-6 -right-6 bg-tricore-red text-white rounded-2xl p-4 shadow-xl hidden sm:block">
                 <p className="text-2xl font-bold">Fast</p>
@@ -101,10 +103,7 @@ export default function DeliveryPage() {
           <h2 className="text-2xl sm:text-3xl font-bold text-tricore-black text-center mb-4">Track Your Order</h2>
           <p className="text-tricore-gray-600 text-sm text-center mb-8">Enter your order or request ID to check the current status.</p>
           <div className="bg-tricore-gray-50 rounded-2xl p-6 sm:p-8 border border-tricore-gray-200">
-            <div className="flex flex-col sm:flex-row gap-3">
-              <input type="text" placeholder="Enter Order ID (e.g. TRC-00001)" className="flex-1 border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none" />
-              <Link href="/track-order" className="inline-flex items-center justify-center gap-2 bg-tricore-red text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-tricore-red-dark transition-colors">Track</Link>
-            </div>
+            <TrackOrderForm />
             <div className="mt-8 space-y-4">
               {["Order placed", "Order confirmed", "Out for delivery", "Delivered"].map((step, i) => (
                 <div key={i} className="flex items-center gap-3 text-tricore-gray-400 text-sm">

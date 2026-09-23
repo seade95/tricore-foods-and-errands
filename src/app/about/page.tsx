@@ -1,6 +1,8 @@
 import { Metadata } from "next";
+import Image from "next/image";
 import CTASection from "@/components/CTASection";
 import { getContent } from "@/lib/store";
+import type { Content, IconTextItem } from "@/lib/types";
 import { Target, Eye, Heart, Lightbulb, Users, MapPin } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -15,10 +17,10 @@ export async function generateMetadata(): Promise<Metadata> {
 const valueIcons: Record<string, React.ElementType> = { Heart, Lightbulb, Users, MapPin };
 
 export default function AboutPage() {
-  const content = getContent();
-  const a = content.about || {};
+  const content = getContent() as Content;
+  const a = content.about || ({} as Content["about"]);
   const whatsapp = content.whatsapp || { number: "+234XXXXXXXXXX", message: "" };
-  const values = (a.values || []).map((v: any) => ({
+  const values = (a.values || []).map((v: IconTextItem) => ({
     icon: valueIcons[v.icon] || Heart,
     title: v.title,
     description: v.description,
@@ -49,7 +51,7 @@ export default function AboutPage() {
             </div>
             <div className="relative">
               <div className="rounded-3xl overflow-hidden shadow-2xl">
-                <img src={a.storyImage} alt="Team collaboration" className="w-full h-[450px] object-cover" loading="lazy" />
+                <Image src={a.storyImage} alt="Team collaboration" width={800} height={400} className="w-full h-[450px] object-cover" />
               </div>
               <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl p-5 shadow-xl border border-tricore-gray-100 hidden sm:block">
                 <p className="text-tricore-red text-3xl font-bold">1</p>
@@ -88,7 +90,7 @@ export default function AboutPage() {
             <h2 className="text-3xl sm:text-4xl font-bold text-tricore-black">Core Values</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((value: any) => (
+            {values.map((value) => (
               <div key={value.title} className="bg-tricore-gray-50 rounded-2xl p-7 border border-tricore-gray-200 hover:border-tricore-red/30 hover:shadow-lg transition-all duration-300 group text-center">
                 <div className="w-14 h-14 bg-tricore-red-light rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:bg-tricore-red group-hover:scale-110 transition-all duration-300">
                   <value.icon className="w-7 h-7 text-tricore-red group-hover:text-white transition-colors" />
@@ -106,7 +108,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="relative">
               <div className="rounded-3xl overflow-hidden shadow-2xl">
-                <img src={a.philosophyImage} alt="Service philosophy" className="w-full h-[400px] object-cover" loading="lazy" />
+                <Image src={a.philosophyImage} alt="Service philosophy" width={800} height={400} className="w-full h-[400px] object-cover" />
               </div>
             </div>
             <div>

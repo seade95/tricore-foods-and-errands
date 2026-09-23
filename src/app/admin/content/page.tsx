@@ -3,6 +3,7 @@
 import { useContent } from "@/components/admin/hooks";
 import { AdminPageHeader, AdminInput, AdminTextarea, AdminCard, SaveBar, LoadingSpinner, ToastDisplay, ImageInput } from "@/components/admin/ui";
 import { FileText } from "lucide-react";
+import type { HomepageContent } from "@/lib/types";
 
 export default function AdminContentPage() {
   const { content, loading, saving, toast, save, update } = useContent();
@@ -11,19 +12,29 @@ export default function AdminContentPage() {
 
   const hp = content.homepage;
 
-  const updateHP = (section: string, patch: any) => {
-    update((c: any) => ({
+  const updateHP = <K extends keyof HomepageContent>(
+    section: K,
+    patch: Partial<HomepageContent[K]>
+  ) => {
+    update((c) => ({
       ...c,
-      homepage: { ...c.homepage, [section]: { ...c.homepage[section], ...patch } },
+      homepage: {
+        ...c.homepage,
+        [section]: { ...c.homepage[section], ...patch } as HomepageContent[K],
+      },
     }));
   };
 
-  const updateAbout = (patch: any) => {
-    update((c: any) => ({ ...c, about: { ...c.about, ...patch } }));
+  const updateAbout = <K extends keyof typeof content.about>(
+    patch: Partial<Pick<typeof content.about, K>>
+  ) => {
+    update((c) => ({ ...c, about: { ...c.about, ...patch } }));
   };
 
-  const updateHIW = (patch: any) => {
-    update((c: any) => ({ ...c, howItWorksPage: { ...c.howItWorksPage, ...patch } }));
+  const updateHIW = <K extends keyof typeof content.howItWorksPage>(
+    patch: Partial<Pick<typeof content.howItWorksPage, K>>
+  ) => {
+    update((c) => ({ ...c, howItWorksPage: { ...c.howItWorksPage, ...patch } }));
   };
 
   return (
@@ -50,10 +61,10 @@ export default function AdminContentPage() {
             <AdminInput label="Heading" value={hp.howItWorksSection.heading} onChange={(v) => updateHP("howItWorksSection", { heading: v })} />
           </div>
           <div className="mt-5 space-y-4">
-            {(hp.howItWorksSection.steps || []).map((step: any, i: number) => (
+            {(hp.howItWorksSection.steps || []).map((step, i) => (
               <div key={i} className="border border-tricore-gray-200 rounded-xl p-4 grid grid-cols-1 sm:grid-cols-4 gap-4">
                 <AdminInput label={`Step ${i + 1} Title`} value={step.title} onChange={(v) => {
-                  update((c: any) => {
+                  update((c) => {
                     const steps = [...c.homepage.howItWorksSection.steps];
                     steps[i] = { ...steps[i], title: v };
                     return { ...c, homepage: { ...c.homepage, howItWorksSection: { ...c.homepage.howItWorksSection, steps } } };
@@ -61,7 +72,7 @@ export default function AdminContentPage() {
                 }} />
                 <div className="sm:col-span-3">
                   <AdminInput label="Description" value={step.description} onChange={(v) => {
-                    update((c: any) => {
+                    update((c) => {
                       const steps = [...c.homepage.howItWorksSection.steps];
                       steps[i] = { ...steps[i], description: v };
                       return { ...c, homepage: { ...c.homepage, howItWorksSection: { ...c.homepage.howItWorksSection, steps } } };
@@ -94,7 +105,7 @@ export default function AdminContentPage() {
             <input
               type="text"
               value={(hp.foodSection.categories || []).join(", ")}
-              onChange={(e) => updateHP("foodSection", { categories: e.target.value.split(",").map((s: string) => s.trim()).filter(Boolean) })}
+              onChange={(e) => updateHP("foodSection", { categories: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) })}
               className="w-full border border-tricore-gray-300 rounded-xl px-4 py-2.5 text-sm text-tricore-black bg-white focus:ring-2 focus:ring-tricore-red/30 focus:border-tricore-red outline-none"
             />
           </div>
@@ -177,7 +188,7 @@ export default function AdminContentPage() {
             <input
               type="text"
               value={(hp.laundrySection.services || []).join(", ")}
-              onChange={(e) => updateHP("laundrySection", { services: e.target.value.split(",").map((s: string) => s.trim()).filter(Boolean) })}
+              onChange={(e) => updateHP("laundrySection", { services: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) })}
               className="w-full border border-tricore-gray-300 rounded-xl px-4 py-2.5 text-sm text-tricore-black bg-white focus:ring-2 focus:ring-tricore-red/30 focus:border-tricore-red outline-none"
             />
           </div>
@@ -204,10 +215,10 @@ export default function AdminContentPage() {
             <AdminInput label="Heading" value={hp.whyTricoreSection.heading} onChange={(v) => updateHP("whyTricoreSection", { heading: v })} />
           </div>
           <div className="space-y-3">
-            {(hp.whyTricoreSection.items || []).map((item: any, i: number) => (
+            {(hp.whyTricoreSection.items || []).map((item, i) => (
               <div key={i} className="border border-tricore-gray-200 rounded-xl p-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
                 <AdminInput label="Title" value={item.title} onChange={(v) => {
-                  update((c: any) => {
+                  update((c) => {
                     const items = [...c.homepage.whyTricoreSection.items];
                     items[i] = { ...items[i], title: v };
                     return { ...c, homepage: { ...c.homepage, whyTricoreSection: { ...c.homepage.whyTricoreSection, items } } };
@@ -215,7 +226,7 @@ export default function AdminContentPage() {
                 }} />
                 <div className="sm:col-span-2">
                   <AdminInput label="Description" value={item.description} onChange={(v) => {
-                    update((c: any) => {
+                    update((c) => {
                       const items = [...c.homepage.whyTricoreSection.items];
                       items[i] = { ...items[i], description: v };
                       return { ...c, homepage: { ...c.homepage, whyTricoreSection: { ...c.homepage.whyTricoreSection, items } } };
@@ -313,7 +324,7 @@ export default function AdminContentPage() {
               <input
                 type="text"
                 value={(content.about.philosophyPillars || []).join(", ")}
-                onChange={(e) => updateAbout({ philosophyPillars: e.target.value.split(",").map((s: string) => s.trim()).filter(Boolean) })}
+                onChange={(e) => updateAbout({ philosophyPillars: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) })}
                 className="w-full border border-tricore-gray-300 rounded-xl px-4 py-2.5 text-sm text-tricore-black bg-white focus:ring-2 focus:ring-tricore-red/30 focus:border-tricore-red outline-none"
               />
             </div>
@@ -348,19 +359,19 @@ export default function AdminContentPage() {
         {/* Contact Page */}
         <AdminCard title="Contact Page Content">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <AdminInput label="Hero Tag" value={content.contactPage.heroTag} onChange={(v) => update((c: any) => ({ ...c, contactPage: { ...c.contactPage, heroTag: v } }))} />
-            <AdminInput label="Hero Heading" value={content.contactPage.heroHeading} onChange={(v) => update((c: any) => ({ ...c, contactPage: { ...c.contactPage, heroHeading: v } }))} />
+            <AdminInput label="Hero Tag" value={content.contactPage.heroTag} onChange={(v) => update((c) => ({ ...c, contactPage: { ...c.contactPage, heroTag: v } }))} />
+            <AdminInput label="Hero Heading" value={content.contactPage.heroHeading} onChange={(v) => update((c) => ({ ...c, contactPage: { ...c.contactPage, heroHeading: v } }))} />
           </div>
           <div className="mt-5">
-            <AdminTextarea label="Hero Description" value={content.contactPage.heroDescription} onChange={(v) => update((c: any) => ({ ...c, contactPage: { ...c.contactPage, heroDescription: v } }))} rows={2} />
+            <AdminTextarea label="Hero Description" value={content.contactPage.heroDescription} onChange={(v) => update((c) => ({ ...c, contactPage: { ...c.contactPage, heroDescription: v } }))} rows={2} />
           </div>
         </AdminCard>
 
         {/* Services Page */}
         <AdminCard title="Services Page Content">
-          <AdminInput label="Hero Heading" value={content.servicesPage.heroHeading} onChange={(v) => update((c: any) => ({ ...c, servicesPage: { ...c.servicesPage, heroHeading: v } }))} />
+          <AdminInput label="Hero Heading" value={content.servicesPage.heroHeading} onChange={(v) => update((c) => ({ ...c, servicesPage: { ...c.servicesPage, heroHeading: v } }))} />
           <div className="mt-5">
-            <AdminTextarea label="Hero Description" value={content.servicesPage.heroDescription} onChange={(v) => update((c: any) => ({ ...c, servicesPage: { ...c.servicesPage, heroDescription: v } }))} rows={2} />
+            <AdminTextarea label="Hero Description" value={content.servicesPage.heroDescription} onChange={(v) => update((c) => ({ ...c, servicesPage: { ...c.servicesPage, heroDescription: v } }))} rows={2} />
           </div>
         </AdminCard>
 

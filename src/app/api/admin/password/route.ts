@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { COOKIE_NAME, verifyToken, checkPassword } from "@/lib/auth";
+import { COOKIE_NAME, verifyToken, checkPassword, hashPassword } from "@/lib/auth";
 import { getAuth, saveAuth } from "@/lib/store";
 
 async function checkAuth(): Promise<boolean> {
@@ -37,7 +37,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const auth = getAuth();
-    saveAuth({ ...auth, password: newPassword });
+    saveAuth({ ...auth, password: hashPassword(newPassword) });
 
     return NextResponse.json({ ok: true });
   } catch {

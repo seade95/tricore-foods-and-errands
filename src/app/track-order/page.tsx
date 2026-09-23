@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { Search, Package, Truck, CheckCircle, Clock } from "lucide-react";
 
-export default function TrackOrderPage() {
-  const [orderId, setOrderId] = useState("");
-  const [searched, setSearched] = useState(false);
+function TrackOrderView({ initialId }: { initialId: string }) {
+  const [orderId, setOrderId] = useState(initialId);
+  const [searched, setSearched] = useState(Boolean(initialId));
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,7 +64,6 @@ export default function TrackOrderPage() {
               </div>
 
               <div className="space-y-6">
-                {/* Status Timeline */}
                 <div className="space-y-0">
                   {[
                     {
@@ -130,7 +130,6 @@ export default function TrackOrderPage() {
                   ))}
                 </div>
 
-                {/* Order Details Placeholder */}
                 <div className="border-t border-tricore-gray-200 pt-6 grid grid-cols-2 gap-4 text-sm">
                   <div>
                     <p className="text-tricore-gray-500 text-xs">Service Type</p>
@@ -186,5 +185,19 @@ export default function TrackOrderPage() {
         </div>
       </section>
     </>
+  );
+}
+
+function TrackOrderContent() {
+  const searchParams = useSearchParams();
+  const idParam = searchParams.get("id") || "";
+  return <TrackOrderView key={idParam} initialId={idParam} />;
+}
+
+export default function TrackOrderPage() {
+  return (
+    <Suspense fallback={<div className="py-20" />}>
+      <TrackOrderContent />
+    </Suspense>
   );
 }

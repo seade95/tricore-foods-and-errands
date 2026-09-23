@@ -3,6 +3,7 @@
 import { useContent } from "@/components/admin/hooks";
 import { AdminPageHeader, AdminInput, AdminTextarea, AdminToggle, AdminCard, SaveBar, LoadingSpinner, ToastDisplay, ImageInput } from "@/components/admin/ui";
 import { Images, Plus, Trash2, ArrowUp, ArrowDown } from "lucide-react";
+import type { Slide } from "@/lib/types";
 
 export default function AdminSlideshowPage() {
   const { content, loading, saving, toast, save, update } = useContent();
@@ -11,18 +12,18 @@ export default function AdminSlideshowPage() {
 
   const slides = content.slides || [];
 
-  const updateSlide = (index: number, patch: any) => {
-    update((c: any) => ({
+  const updateSlide = (index: number, patch: Partial<Slide>) => {
+    update((c) => ({
       ...c,
-      slides: c.slides.map((s: any, i: number) => (i === index ? { ...s, ...patch } : s)),
+      slides: (c.slides || []).map((s, i) => (i === index ? { ...s, ...patch } : s)),
     }));
   };
 
   const addSlide = () => {
-    update((c: any) => ({
+    update((c) => ({
       ...c,
       slides: [
-        ...c.slides,
+        ...(c.slides || []),
         {
           id: `slide-${Date.now()}`,
           image: "",
@@ -38,12 +39,12 @@ export default function AdminSlideshowPage() {
   };
 
   const removeSlide = (index: number) => {
-    update((c: any) => ({ ...c, slides: c.slides.filter((_: any, i: number) => i !== index) }));
+    update((c) => ({ ...c, slides: (c.slides || []).filter((_, i) => i !== index) }));
   };
 
   const moveSlide = (index: number, dir: -1 | 1) => {
-    update((c: any) => {
-      const arr = [...c.slides];
+    update((c) => {
+      const arr = [...(c.slides || [])];
       const target = index + dir;
       if (target < 0 || target >= arr.length) return c;
       [arr[index], arr[target]] = [arr[target], arr[index]];
@@ -70,13 +71,13 @@ export default function AdminSlideshowPage() {
           </button>
         </div>
 
-        {slides.map((slide: any, i: number) => (
+        {slides.map((slide, i) => (
           <AdminCard key={slide.id || i} title={`Slide ${i + 1}`}>
             <div className="space-y-5">
               <div className="flex items-center justify-between">
                 <AdminToggle
                   label={slide.enabled ? "Visible" : "Hidden"}
-                  value={slide.enabled}
+                  value={slide.enabled !== false}
                   onChange={(v) => updateSlide(i, { enabled: v })}
                 />
                 <div className="flex items-center gap-1">

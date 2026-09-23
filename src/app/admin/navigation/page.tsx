@@ -3,6 +3,7 @@
 import { useContent } from "@/components/admin/hooks";
 import { AdminPageHeader, AdminInput, AdminCard, SaveBar, LoadingSpinner, ToastDisplay } from "@/components/admin/ui";
 import { Navigation, Plus, Trash2 } from "lucide-react";
+import type { FooterLink, NavLink } from "@/lib/types";
 
 export default function AdminNavigationPage() {
   const { content, loading, saving, toast, save, update } = useContent();
@@ -10,47 +11,53 @@ export default function AdminNavigationPage() {
   if (loading || !content) return <LoadingSpinner />;
 
   const navLinks = content.navLinks || [];
-  const footer = content.footer;
+  const footer = content.footer || { description: "", companyLinks: [], supportLinks: [] };
 
-  const updateLink = (index: number, patch: any) => {
-    update((c: any) => ({
+  const updateLink = (index: number, patch: Partial<NavLink>) => {
+    update((c) => ({
       ...c,
-      navLinks: c.navLinks.map((l: any, i: number) => (i === index ? { ...l, ...patch } : l)),
+      navLinks: (c.navLinks || []).map((l, i) => (i === index ? { ...l, ...patch } : l)),
     }));
   };
 
   const addNavLink = () => {
-    update((c: any) => ({
+    update((c) => ({
       ...c,
-      navLinks: [...c.navLinks, { label: "", href: "/", enabled: true }],
+      navLinks: [...(c.navLinks || []), { label: "", href: "/", enabled: true }],
     }));
   };
 
   const removeNavLink = (index: number) => {
-    update((c: any) => ({ ...c, navLinks: c.navLinks.filter((_: any, i: number) => i !== index) }));
+    update((c) => ({ ...c, navLinks: (c.navLinks || []).filter((_, i) => i !== index) }));
   };
 
-  const updateFooterLink = (group: "companyLinks" | "supportLinks", index: number, patch: any) => {
-    update((c: any) => ({
+  const updateFooterLink = (group: "companyLinks" | "supportLinks", index: number, patch: Partial<FooterLink>) => {
+    update((c) => ({
       ...c,
       footer: {
         ...c.footer,
-        [group]: c.footer[group].map((l: any, i: number) => (i === index ? { ...l, ...patch } : l)),
+        [group]: (c.footer?.[group] || []).map((l, i) => (i === index ? { ...l, ...patch } : l)),
       },
     }));
   };
 
   const addFooterLink = (group: "companyLinks" | "supportLinks") => {
-    update((c: any) => ({
+    update((c) => ({
       ...c,
-      footer: { ...c.footer, [group]: [...c.footer[group], { label: "", href: "/" }] },
+      footer: {
+        ...c.footer,
+        [group]: [...(c.footer?.[group] || []), { label: "", href: "/" }],
+      },
     }));
   };
 
   const removeFooterLink = (group: "companyLinks" | "supportLinks", index: number) => {
-    update((c: any) => ({
+    update((c) => ({
       ...c,
-      footer: { ...c.footer, [group]: c.footer[group].filter((_: any, i: number) => i !== index) },
+      footer: {
+        ...c.footer,
+        [group]: (c.footer?.[group] || []).filter((_, i) => i !== index),
+      },
     }));
   };
 
@@ -62,7 +69,7 @@ export default function AdminNavigationPage() {
       <div className="space-y-6">
         <AdminCard title="Main Navigation" description="Links shown in the header menu">
           <div className="space-y-3">
-            {navLinks.map((link: any, i: number) => (
+            {navLinks.map((link, i) => (
               <div key={i} className="flex items-end gap-3">
                 <div className="flex-1 grid grid-cols-2 gap-3">
                   <AdminInput label="Label" value={link.label} onChange={(v) => updateLink(i, { label: v })} placeholder="e.g. About" />
@@ -84,12 +91,12 @@ export default function AdminNavigationPage() {
         </AdminCard>
 
         <AdminCard title="Footer Settings">
-          <AdminInput label="Footer Description" value={footer.description} onChange={(v) => update((c: any) => ({ ...c, footer: { ...c.footer, description: v } }))} />
+          <AdminInput label="Footer Description" value={footer.description} onChange={(v) => update((c) => ({ ...c, footer: { ...c.footer, description: v } }))} />
         </AdminCard>
 
         <AdminCard title="Footer — Company Links">
           <div className="space-y-3">
-            {footer.companyLinks.map((link: any, i: number) => (
+            {footer.companyLinks.map((link, i) => (
               <div key={i} className="flex items-end gap-3">
                 <div className="flex-1 grid grid-cols-2 gap-3">
                   <AdminInput label="Label" value={link.label} onChange={(v) => updateFooterLink("companyLinks", i, { label: v })} />
@@ -109,7 +116,7 @@ export default function AdminNavigationPage() {
 
         <AdminCard title="Footer — Support Links">
           <div className="space-y-3">
-            {footer.supportLinks.map((link: any, i: number) => (
+            {footer.supportLinks.map((link, i) => (
               <div key={i} className="flex items-end gap-3">
                 <div className="flex-1 grid grid-cols-2 gap-3">
                   <AdminInput label="Label" value={link.label} onChange={(v) => updateFooterLink("supportLinks", i, { label: v })} />

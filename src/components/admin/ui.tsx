@@ -1,5 +1,6 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element -- dynamic admin preview URLs */
 import { useState, useRef } from "react";
 import { CheckCircle, AlertCircle, Upload, X, Loader2 } from "lucide-react";
 import type { Toast } from "./hooks";
@@ -199,7 +200,7 @@ export function ImageInput({
           <input
             ref={fileRef}
             type="file"
-            accept="image/*,video/*"
+            accept="image/*"
             className="hidden"
             onChange={(e) => {
               const f = e.target.files?.[0];

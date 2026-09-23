@@ -22,7 +22,6 @@ const ALLOWED_TYPES: Record<string, string> = {
   "image/png": ".png",
   "image/webp": ".webp",
   "image/gif": ".gif",
-  "image/svg+xml": ".svg",
   "video/mp4": ".mp4",
   "video/webm": ".webm",
   "video/quicktime": ".mov",
@@ -42,7 +41,7 @@ export async function POST(request: NextRequest) {
 
     const ext = ALLOWED_TYPES[file.type];
     if (!ext) {
-      return NextResponse.json({ error: "File type not allowed. Use images (jpg, png, webp, gif, svg) or videos (mp4, webm, mov)." }, { status: 400 });
+      return NextResponse.json({ error: "File type not allowed. Use images (jpg, png, webp, gif) or videos (mp4, webm, mov)." }, { status: 400 });
     }
 
     const MAX_SIZE = 50 * 1024 * 1024;

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { COOKIE_NAME, verifyToken } from "@/lib/auth";
-import { getContent, saveContent, getAuth } from "@/lib/store";
+import { getContent, saveContent, getAuth, isValidContent } from "@/lib/store";
 
 async function checkAuth(): Promise<boolean> {
   try {
@@ -28,6 +28,12 @@ export async function PUT(request: NextRequest) {
   }
   try {
     const body = await request.json();
+    if (!isValidContent(body)) {
+      return NextResponse.json(
+        { error: "Invalid content shape: missing required sections" },
+        { status: 400 }
+      );
+    }
     saveContent(body);
     return NextResponse.json({ ok: true });
   } catch {

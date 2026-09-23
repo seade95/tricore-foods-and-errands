@@ -1,6 +1,8 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element -- dynamic admin media URLs */
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { AdminPageHeader, ToastDisplay } from "@/components/admin/ui";
 import type { Toast } from "@/components/admin/hooks";
 import { uploadFile } from "@/components/admin/hooks";
@@ -21,6 +23,7 @@ export default function AdminMediaPage() {
   const [toast, setToast] = useState<Toast | null>(null);
   const [filter, setFilter] = useState<"all" | "image" | "video">("all");
   const fileRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   const showToast = useCallback((t: Toast) => {
     setToast(t);
@@ -31,7 +34,7 @@ export default function AdminMediaPage() {
     try {
       const res = await fetch("/api/admin/media");
       if (res.status === 401) {
-        window.location.href = "/admin/login";
+        router.replace("/admin/login");
         return;
       }
       const data = await res.json();
@@ -40,7 +43,7 @@ export default function AdminMediaPage() {
       showToast({ type: "error", message: "Failed to load media" });
     }
     setLoading(false);
-  }, [showToast]);
+  }, [showToast, router]);
 
   useEffect(() => {
     let cancelled = false;
@@ -48,7 +51,7 @@ export default function AdminMediaPage() {
       try {
         const res = await fetch("/api/admin/media");
         if (res.status === 401) {
-          window.location.href = "/admin/login";
+          if (!cancelled) router.replace("/admin/login");
           return;
         }
         const data = await res.json();
@@ -61,7 +64,7 @@ export default function AdminMediaPage() {
     return () => {
       cancelled = true;
     };
-  }, [showToast]);
+  }, [showToast, router]);
 
   const handleUpload = async (fileList: FileList | null) => {
     if (!fileList) return;
@@ -72,6 +75,10 @@ export default function AdminMediaPage() {
       const result = await uploadFile(file);
       if ("error" in result) {
         failed++;
+        if (result.unauthorized) {
+          router.replace("/admin/login");
+          return;
+        }
       } else {
         success++;
       }
@@ -86,6 +93,10 @@ export default function AdminMediaPage() {
     if (!confirm(`Delete ${name}?`)) return;
     try {
       const res = await fetch(`/api/admin/media?name=${encodeURIComponent(name)}`, { method: "DELETE" });
+      if (res.status === 401) {
+        router.replace("/admin/login");
+        return;
+      }
       if (res.ok) {
         showToast({ type: "success", message: "File deleted" });
         setFiles((f) => f.filter((x) => x.name !== name));
@@ -145,7 +156,7 @@ export default function AdminMediaPage() {
           {uploading ? "Uploading..." : "Drop files here or click to upload"}
         </p>
         <p className="text-xs text-tricore-gray-500">
-          Images (JPG, PNG, WebP, GIF, SVG) and Videos (MP4, WebM, MOV) — max 50MB each
+          Images (JPG, PNG, WebP, GIF) and Videos (MP4, WebM, MOV) — max 50MB each
         </p>
       </div>
 

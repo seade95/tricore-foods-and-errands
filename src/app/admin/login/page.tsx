@@ -78,10 +78,6 @@ export default function AdminLoginPage() {
             {loading && <Loader2 className="w-4 h-4 animate-spin" />}
             {loading ? "Signing in..." : "Sign In"}
           </button>
-
-          <p className="text-center text-tricore-gray-600 text-xs">
-            Default password: <code className="text-tricore-gray-400">admin123</code> — change it after first login
-          </p>
         </form>
       </div>
     </div>

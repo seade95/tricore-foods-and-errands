@@ -19,15 +19,15 @@ export default function AdminSettingsPage() {
       <div className="space-y-6">
         <AdminCard title="Basic Information" description="Core site identity and metadata">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <AdminInput label="Site Name" value={s.name} onChange={(v) => update((c: any) => ({ ...c, site: { ...c.site, name: v } }))} required />
-            <AdminInput label="Short Name (Logo Text)" value={s.shortName} onChange={(v) => update((c: any) => ({ ...c, site: { ...c.site, shortName: v } }))} />
-            <AdminInput label="Logo Subtitle" value={s.subtitle} onChange={(v) => update((c: any) => ({ ...c, site: { ...c.site, subtitle: v } }))} hint="Shown under the short name in the header" />
-            <AdminInput label="Tagline" value={s.tagline} onChange={(v) => update((c: any) => ({ ...c, site: { ...c.site, tagline: v } }))} />
-            <AdminInput label="Website URL" value={s.url} onChange={(v) => update((c: any) => ({ ...c, site: { ...c.site, url: v } }))} />
-            <AdminInput label="Keywords (SEO)" value={s.keywords} onChange={(v) => update((c: any) => ({ ...c, site: { ...c.site, keywords: v } }))} hint="Comma-separated keywords for search engines" />
+            <AdminInput label="Site Name" value={s.name} onChange={(v) => update((c) => ({ ...c, site: { ...c.site, name: v } }))} required />
+            <AdminInput label="Short Name (Logo Text)" value={s.shortName} onChange={(v) => update((c) => ({ ...c, site: { ...c.site, shortName: v } }))} />
+            <AdminInput label="Logo Subtitle" value={s.subtitle} onChange={(v) => update((c) => ({ ...c, site: { ...c.site, subtitle: v } }))} hint="Shown under the short name in the header" />
+            <AdminInput label="Tagline" value={s.tagline} onChange={(v) => update((c) => ({ ...c, site: { ...c.site, tagline: v } }))} />
+            <AdminInput label="Website URL" value={s.url} onChange={(v) => update((c) => ({ ...c, site: { ...c.site, url: v } }))} />
+            <AdminInput label="Keywords (SEO)" value={s.keywords} onChange={(v) => update((c) => ({ ...c, site: { ...c.site, keywords: v } }))} hint="Comma-separated keywords for search engines" />
           </div>
           <div className="mt-5">
-            <AdminTextarea label="Site Description (SEO)" value={s.description} onChange={(v) => update((c: any) => ({ ...c, site: { ...c.site, description: v } }))} rows={3} hint="Used for search engine results and social sharing" />
+            <AdminTextarea label="Site Description (SEO)" value={s.description} onChange={(v) => update((c) => ({ ...c, site: { ...c.site, description: v } }))} rows={3} hint="Used for search engine results and social sharing" />
           </div>
         </AdminCard>
 
@@ -35,7 +35,7 @@ export default function AdminSettingsPage() {
           <ImageInput
             label="Logo Image"
             value={content.site.logo || ""}
-            onChange={(v) => update((c: any) => ({ ...c, site: { ...c.site, logo: v } }))}
+            onChange={(v) => update((c) => ({ ...c, site: { ...c.site, logo: v } }))}
             hint="Recommended: square PNG with transparent background, at least 200x200px"
           />
         </AdminCard>

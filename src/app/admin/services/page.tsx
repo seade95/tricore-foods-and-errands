@@ -3,6 +3,7 @@
 import { useContent } from "@/components/admin/hooks";
 import { AdminPageHeader, AdminInput, AdminTextarea, AdminToggle, AdminCard, SaveBar, LoadingSpinner, ToastDisplay, ImageInput } from "@/components/admin/ui";
 import { Package } from "lucide-react";
+import type { Service } from "@/lib/types";
 
 const iconOptions = [
   "UtensilsCrossed",
@@ -24,10 +25,10 @@ export default function AdminServicesPage() {
 
   const services = content.services || [];
 
-  const updateService = (id: string, patch: any) => {
-    update((c: any) => ({
+  const updateService = (id: string, patch: Partial<Service>) => {
+    update((c) => ({
       ...c,
-      services: c.services.map((s: any) => (s.id === id ? { ...s, ...patch } : s)),
+      services: (c.services || []).map((s) => (s.id === id ? { ...s, ...patch } : s)),
     }));
   };
 
@@ -37,12 +38,12 @@ export default function AdminServicesPage() {
       <AdminPageHeader title="Services" description="Edit service cards, descriptions, icons and images" icon={<Package className="w-5 h-5" />} />
 
       <div className="space-y-6">
-        {services.map((svc: any) => (
+        {services.map((svc) => (
           <AdminCard key={svc.id} title={svc.title || svc.id}>
             <div className="space-y-5">
               <AdminToggle
                 label={svc.enabled ? "Shown on site" : "Hidden"}
-                value={svc.enabled}
+                value={svc.enabled !== false}
                 onChange={(v) => updateService(svc.id, { enabled: v })}
               />
 
@@ -68,7 +69,7 @@ export default function AdminServicesPage() {
 
               <AdminTextarea label="Short Description" value={svc.shortDescription} onChange={(v) => updateService(svc.id, { shortDescription: v })} rows={2} />
 
-              <ImageInput label="Card Image" value={svc.image} onChange={(v) => updateService(svc.id, { image: v })} hint="Shown on service cards and homepage" />
+              <ImageInput label="Card Image" value={svc.image || ""} onChange={(v) => updateService(svc.id, { image: v })} hint="Shown on service cards and homepage" />
             </div>
           </AdminCard>
         ))}
