@@ -22,7 +22,7 @@ const serviceImages: Record<string, string> = {
   groceries: "https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=400&q=80",
   errands: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&q=80",
   delivery: "https://images.unsplash.com/photo-1616432043562-3671ea2e5242?w=400&q=80",
-  laundry: "https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=400&q=80",
+  laundry: "https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=400&q=80",
   business: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=80",
 };
 

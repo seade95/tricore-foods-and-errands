@@ -201,7 +201,7 @@ export default function Home() {
       {/* Tricore Laundry */}
       <section className="py-20 sm:py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-tricore-red via-tricore-red-dark to-tricore-black" />
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=1600&q=80')] bg-cover bg-center opacity-20" />
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=1600&q=80')] bg-cover bg-center opacity-20" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-12">
             <p className="text-white/70 font-semibold text-xs uppercase tracking-[0.25em] mb-3">Tricore Laundry</p>

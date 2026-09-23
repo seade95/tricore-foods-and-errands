@@ -37,7 +37,7 @@ const slides = [
   },
   {
     image:
-      "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=1600&q=80",
+      "https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=1600&q=80",
     headline: "Fresh Clothes.",
     sub: "Less Stress.",
     description:
