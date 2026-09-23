@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
+import WeatherWidget from "@/components/WeatherWidget";
 
 interface NavItem {
   label: string;
@@ -109,23 +110,24 @@ export default function Header({ site, navLinks, services }: HeaderProps) {
             )}
           </nav>
 
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="flex items-center gap-2 lg:gap-3">
+            <WeatherWidget />
             <Link
               href="/request"
-              className="bg-tricore-red text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-tricore-red-dark transition-all hover:shadow-lg hover:shadow-tricore-red/25 inline-flex items-center gap-2"
+              className="hidden lg:inline-flex bg-tricore-red text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-tricore-red-dark transition-all hover:shadow-lg hover:shadow-tricore-red/25 items-center gap-2"
             >
               Order / Request
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
-          </div>
 
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden p-2 text-tricore-gray-700 hover:text-tricore-red transition-colors rounded-lg hover:bg-tricore-gray-50"
-            aria-label="Toggle navigation"
-          >
-            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="lg:hidden p-2 text-tricore-gray-700 hover:text-tricore-red transition-colors rounded-lg hover:bg-tricore-gray-50"
+              aria-label="Toggle navigation"
+            >
+              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
       </div>
 
