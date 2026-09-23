@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import type { Content, Submission } from "./types";
+import bundledContent from "../../data/content.json";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const CONTENT_FILE = path.join(DATA_DIR, "content.json");
@@ -31,13 +32,12 @@ function ensureDir() {
 }
 
 export function getContent(): Content {
-  ensureDir();
   try {
+    ensureDir();
     const raw = fs.readFileSync(CONTENT_FILE, "utf-8");
-    const parsed = JSON.parse(raw) as Partial<Content>;
-    return parsed as Content;
+    return JSON.parse(raw) as Content;
   } catch {
-    return {} as Content;
+    return bundledContent as Content;
   }
 }
 
@@ -54,12 +54,15 @@ export function saveContent(content: Content): void {
 }
 
 export function getAuth(): { password: string; secret: string } {
-  ensureDir();
   try {
+    ensureDir();
     const raw = fs.readFileSync(AUTH_FILE, "utf-8");
     return JSON.parse(raw);
   } catch {
-    return { password: "admin123", secret: "tricore-default-secret" };
+    return {
+      password: process.env.ADMIN_PASSWORD || "admin123",
+      secret: process.env.AUTH_SECRET || "tricore-default-secret",
+    };
   }
 }
 
@@ -71,8 +74,8 @@ export function saveAuth(auth: { password: string; secret: string }): void {
 }
 
 export function getSubmissions(): Submission[] {
-  ensureDir();
   try {
+    ensureDir();
     const raw = fs.readFileSync(SUBMISSIONS_FILE, "utf-8");
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed) ? parsed : [];
@@ -84,16 +87,20 @@ export function getSubmissions(): Submission[] {
 export function appendSubmission(
   submission: Omit<Submission, "id" | "receivedAt">
 ): Submission {
-  ensureDir();
-  const list = getSubmissions();
   const entry: Submission = {
     ...submission,
     id: `sub-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     receivedAt: new Date().toISOString(),
   };
-  list.unshift(entry);
-  const tmp = SUBMISSIONS_FILE + ".tmp";
-  fs.writeFileSync(tmp, JSON.stringify(list, null, 2));
-  fs.renameSync(tmp, SUBMISSIONS_FILE);
+  try {
+    const list = getSubmissions();
+    list.unshift(entry);
+    ensureDir();
+    const tmp = SUBMISSIONS_FILE + ".tmp";
+    fs.writeFileSync(tmp, JSON.stringify(list, null, 2));
+    fs.renameSync(tmp, SUBMISSIONS_FILE);
+  } catch {
+    // Workers read-only FS: accept submission without local persistence
+  }
   return entry;
 }
