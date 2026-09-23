@@ -73,16 +73,16 @@ export default function Footer({ site, services, social, footer }: FooterProps) 
               <div className="flex gap-2">
                 {socialKeys
                   .filter((key) => social[key] && social[key] !== "#")
-                  .map((social) => (
+                  .map((key) => (
                     <a
-                      key={social}
-                      href={social === "#" ? "#" : social}
-                      target={social !== "#" ? "_blank" : undefined}
+                      key={key}
+                      href={social[key]}
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="w-9 h-9 rounded-lg bg-tricore-gray-800 flex items-center justify-center text-tricore-gray-400 hover:bg-tricore-red hover:text-white transition-all text-xs capitalize"
-                      aria-label={social}
+                      aria-label={key}
                     >
-                      {social.charAt(0).toUpperCase()}
+                      {key.charAt(0).toUpperCase()}
                     </a>
                   ))}
               </div>

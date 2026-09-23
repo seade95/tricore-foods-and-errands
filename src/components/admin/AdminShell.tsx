@@ -16,8 +16,6 @@ import {
   FolderOpen,
   KeyRound,
   LogOut,
-  Menu,
-  X,
 } from "lucide-react";
 
 const navItems = [

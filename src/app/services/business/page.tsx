@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import WhatsAppCTA from "@/components/WhatsAppCTA";
+import BusinessForm from "@/components/BusinessForm";
 import { CheckCircle } from "lucide-react";
 import { getContent } from "@/lib/store";
 
@@ -136,88 +137,7 @@ export default function BusinessPage() {
           <p className="text-tricore-gray-600 text-sm text-center mb-8">
             Tell us about your organisation and we will be in touch.
           </p>
-          <form className="space-y-5 bg-white rounded-2xl p-6 sm:p-8 border border-tricore-gray-200">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div>
-                <label className="block text-sm font-medium text-tricore-black mb-1.5">
-                  Organisation Name *
-                </label>
-                <input
-                  type="text"
-                  required
-                  className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none"
-                  placeholder="Company or organisation name"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-tricore-black mb-1.5">
-                  Contact Person *
-                </label>
-                <input
-                  type="text"
-                  required
-                  className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none"
-                  placeholder="Full name"
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div>
-                <label className="block text-sm font-medium text-tricore-black mb-1.5">
-                  Phone Number *
-                </label>
-                <input
-                  type="tel"
-                  required
-                  className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none"
-                  placeholder="+234..."
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-tricore-black mb-1.5">
-                  Email *
-                </label>
-                <input
-                  type="email"
-                  required
-                  className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none"
-                  placeholder="email@organisation.com"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-tricore-black mb-1.5">
-                Organisation Type
-              </label>
-              <select className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none">
-                <option value="">Select type</option>
-                <option value="office">Office</option>
-                <option value="school">School</option>
-                <option value="hospital">Hospital</option>
-                <option value="ngo">NGO</option>
-                <option value="church">Church</option>
-                <option value="business">Small Business</option>
-                <option value="corporate">Corporate Organisation</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-tricore-black mb-1.5">
-                Services Needed
-              </label>
-              <textarea
-                rows={4}
-                className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none resize-none"
-                placeholder="Tell us what services your organisation needs..."
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-tricore-red text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-tricore-red-dark transition-colors"
-            >
-              Submit Partnership Request
-            </button>
-          </form>
+          <BusinessForm />
         </div>
       </section>
     </>

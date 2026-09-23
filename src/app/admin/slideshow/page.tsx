@@ -2,7 +2,7 @@
 
 import { useContent } from "@/components/admin/hooks";
 import { AdminPageHeader, AdminInput, AdminTextarea, AdminToggle, AdminCard, SaveBar, LoadingSpinner, ToastDisplay, ImageInput } from "@/components/admin/ui";
-import { Images, Plus, Trash2, ArrowUp, ArrowDown, Eye, EyeOff } from "lucide-react";
+import { Images, Plus, Trash2, ArrowUp, ArrowDown } from "lucide-react";
 
 export default function AdminSlideshowPage() {
   const { content, loading, saving, toast, save, update } = useContent();

@@ -43,8 +43,25 @@ export default function AdminMediaPage() {
   }, [showToast]);
 
   useEffect(() => {
-    loadFiles();
-  }, [loadFiles]);
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/admin/media");
+        if (res.status === 401) {
+          window.location.href = "/admin/login";
+          return;
+        }
+        const data = await res.json();
+        if (!cancelled) setFiles(data);
+      } catch {
+        if (!cancelled) showToast({ type: "error", message: "Failed to load media" });
+      }
+      if (!cancelled) setLoading(false);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [showToast]);
 
   const handleUpload = async (fileList: FileList | null) => {
     if (!fileList) return;

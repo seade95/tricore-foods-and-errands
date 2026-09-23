@@ -1,8 +1,8 @@
 "use client";
 
 import { useContent } from "@/components/admin/hooks";
-import { AdminPageHeader, AdminInput, AdminTextarea, AdminCard, SaveBar, LoadingSpinner, ToastDisplay, ImageInput, AdminToggle } from "@/components/admin/ui";
-import { FileText, Plus, Trash2 } from "lucide-react";
+import { AdminPageHeader, AdminInput, AdminTextarea, AdminCard, SaveBar, LoadingSpinner, ToastDisplay, ImageInput } from "@/components/admin/ui";
+import { FileText } from "lucide-react";
 
 export default function AdminContentPage() {
   const { content, loading, saving, toast, save, update } = useContent();

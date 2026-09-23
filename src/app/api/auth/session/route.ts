@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { COOKIE_NAME, verifyToken, createToken, clearAuthCookie, setAuthCookie } from "@/lib/auth";
 import { getAuth } from "@/lib/store";

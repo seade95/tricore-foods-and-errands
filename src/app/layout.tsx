@@ -17,7 +17,6 @@ const inter = Inter({
 export async function generateMetadata(): Promise<Metadata> {
   const content = getContent();
   const site = content.site || {};
-  const contact = content.contact || {};
 
   return {
     title: {

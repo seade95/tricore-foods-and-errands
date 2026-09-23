@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import WhatsAppCTA from "@/components/WhatsAppCTA";
+import ContactForm from "@/components/ContactForm";
 import { getContent } from "@/lib/store";
 import { Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
 
@@ -116,43 +117,7 @@ export default function ContactPage() {
 
             <div>
               <h2 className="text-2xl font-bold text-tricore-black mb-6">Send Us a Message</h2>
-              <form className="space-y-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div>
-                    <label className="block text-sm font-medium text-tricore-black mb-1.5">Full Name *</label>
-                    <input type="text" required className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none" placeholder="Your name" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-tricore-black mb-1.5">Phone Number *</label>
-                    <input type="tel" required className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none" placeholder="+234..." />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-tricore-black mb-1.5">Email Address</label>
-                  <input type="email" className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none" placeholder="your@email.com" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-tricore-black mb-1.5">Subject</label>
-                  <select className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none">
-                    <option value="">Select a topic</option>
-                    <option value="general">General Enquiry</option>
-                    <option value="food">Food Service</option>
-                    <option value="errand">Errand Service</option>
-                    <option value="delivery">Delivery & Logistics</option>
-                    <option value="laundry">Laundry Service</option>
-                    <option value="business">Business Partnership</option>
-                    <option value="support">Customer Support</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-tricore-black mb-1.5">Message *</label>
-                  <textarea rows={5} required className="w-full border border-tricore-gray-300 rounded-xl px-4 py-3 text-sm text-tricore-black focus:ring-2 focus:ring-tricore-red focus:border-tricore-red outline-none resize-none" placeholder="How can we help you?" />
-                </div>
-                <button type="submit" className="w-full bg-tricore-red text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-tricore-red-dark transition-colors">
-                  Send Message
-                </button>
-              </form>
+              <ContactForm />
             </div>
           </div>
         </div>

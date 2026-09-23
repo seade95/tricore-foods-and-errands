@@ -10,7 +10,6 @@ import {
   HelpCircle,
   FileText,
   FolderOpen,
-  Users,
 } from "lucide-react";
 import Link from "next/link";
 

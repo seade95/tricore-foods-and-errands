@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { CheckCircle, AlertCircle, Upload, X, ImageIcon, Loader2 } from "lucide-react";
+import { CheckCircle, AlertCircle, Upload, X, Loader2 } from "lucide-react";
 import type { Toast } from "./hooks";
 import { uploadFile } from "./hooks";
 
@@ -266,17 +266,26 @@ export function SaveBar({
 export function AdminCard({
   title,
   description,
+  icon,
   children,
 }: {
   title: string;
   description?: string;
+  icon?: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
     <div className="bg-white rounded-2xl border border-tricore-gray-200 p-6">
-      <div className="mb-5">
-        <h2 className="text-lg font-bold text-tricore-black">{title}</h2>
-        {description && <p className="text-sm text-tricore-gray-500 mt-1">{description}</p>}
+      <div className="mb-5 flex items-start gap-3">
+        {icon && (
+          <div className="w-8 h-8 bg-tricore-red-light rounded-lg flex items-center justify-center text-tricore-red shrink-0 mt-0.5">
+            {icon}
+          </div>
+        )}
+        <div>
+          <h2 className="text-lg font-bold text-tricore-black">{title}</h2>
+          {description && <p className="text-sm text-tricore-gray-500 mt-1">{description}</p>}
+        </div>
       </div>
       {children}
     </div>
