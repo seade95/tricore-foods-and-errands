@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { COOKIE_NAME, verifyToken } from "@/lib/auth";
-import { getAuth } from "@/lib/store";
+import { getAuth, getR2 } from "@/lib/store";
 import fs from "fs";
 import path from "path";
 
@@ -41,25 +41,49 @@ export async function POST(request: NextRequest) {
 
     const ext = ALLOWED_TYPES[file.type];
     if (!ext) {
-      return NextResponse.json({ error: "File type not allowed. Use images (jpg, png, webp, gif) or videos (mp4, webm, mov)." }, { status: 400 });
+      return NextResponse.json(
+        {
+          error:
+            "File type not allowed. Use images (jpg, png, webp, gif) or videos (mp4, webm, mov).",
+        },
+        { status: 400 }
+      );
     }
 
     const MAX_SIZE = 50 * 1024 * 1024;
     if (file.size > MAX_SIZE) {
-      return NextResponse.json({ error: "File too large. Max 50MB." }, { status: 400 });
+      return NextResponse.json(
+        { error: "File too large. Max 50MB." },
+        { status: 400 }
+      );
     }
 
     const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    const uniqueName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}${ext}`;
+
+    const r2 = getR2();
+    if (r2) {
+      await r2.put(uniqueName, new Uint8Array(bytes), {
+        httpMetadata: { contentType: file.type },
+      });
+      return NextResponse.json({
+        url: `/uploads/${uniqueName}`,
+        name: uniqueName,
+        size: file.size,
+        type: file.type,
+      });
+    }
 
     const uploadDir = path.join(process.cwd(), "public", "uploads");
     if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+    fs.writeFileSync(path.join(uploadDir, uniqueName), Buffer.from(bytes));
 
-    const uniqueName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}${ext}`;
-    const filePath = path.join(uploadDir, uniqueName);
-    fs.writeFileSync(filePath, buffer);
-
-    return NextResponse.json({ url: `/uploads/${uniqueName}`, name: uniqueName, size: file.size, type: file.type });
+    return NextResponse.json({
+      url: `/uploads/${uniqueName}`,
+      name: uniqueName,
+      size: file.size,
+      type: file.type,
+    });
   } catch {
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }

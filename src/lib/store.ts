@@ -6,12 +6,39 @@ import bundledContent from "../../data/content.json";
 
 interface KvLike {
   get(key: string): Promise<string | null>;
-  put(key: string, value: string): Promise<void>;
+  put(
+    key: string,
+    value: string,
+    options?: { expirationTtl?: number }
+  ): Promise<void>;
+  delete(key: string): Promise<void>;
+}
+
+interface R2Object {
+  arrayBuffer(): Promise<ArrayBuffer>;
+  httpMetadata?: { contentType?: string };
+}
+
+interface R2Like {
+  put(
+    key: string,
+    value: ArrayBuffer | Uint8Array | string,
+    options?: { httpMetadata?: { contentType?: string } }
+  ): Promise<unknown>;
+  get(key: string): Promise<R2Object | null>;
+  delete(key: string): Promise<void>;
+  list(options?: {
+    prefix?: string;
+    limit?: number;
+  }): Promise<{
+    objects: { key: string; size: number; uploaded: Date }[];
+  }>;
 }
 
 const KV_CONTENT = "content";
 const KV_AUTH = "auth";
 const KV_SUBMISSIONS = "submissions";
+const KV_RATE_PREFIX = "rl:login:";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const CONTENT_FILE = path.join(DATA_DIR, "content.json");
@@ -37,7 +64,7 @@ const CONTENT_KEYS: (keyof Content)[] = [
   "footer",
 ];
 
-function getKv(): KvLike | null {
+export function getKv(): KvLike | null {
   try {
     const ctx = getCloudflareContext();
     const kv = (
@@ -51,6 +78,80 @@ function getKv(): KvLike | null {
   }
   return null;
 }
+
+export function getR2(): R2Like | null {
+  try {
+    const ctx = getCloudflareContext();
+    const bucket = (
+      ctx.env as unknown as Record<string, unknown>
+    ).TRICORE_MEDIA as R2Like | undefined;
+    if (
+      bucket &&
+      typeof bucket.put === "function" &&
+      typeof bucket.get === "function"
+    ) {
+      return bucket;
+    }
+  } catch {
+    // local next dev/build without OpenNext context
+  }
+  return null;
+}
+
+export interface RateLimitResult {
+  limited: boolean;
+}
+
+export async function trackLoginAttempt(
+  ip: string,
+  maxAttempts = 5,
+  windowMs = 15 * 60 * 1000
+): Promise<RateLimitResult> {
+  const now = Date.now();
+  const kv = getKv();
+  if (kv) {
+    const key = `${KV_RATE_PREFIX}${ip}`;
+    try {
+      const raw = await kv.get(key);
+      let count = 1;
+      let reset = now + windowMs;
+      if (raw) {
+        const parsed = JSON.parse(raw) as { count: number; reset: number };
+        if (typeof parsed.reset === "number" && parsed.reset > now) {
+          count = parsed.count + 1;
+          reset = parsed.reset;
+        }
+      }
+      await kv.put(
+        key,
+        JSON.stringify({ count, reset }),
+        { expirationTtl: Math.max(60, Math.ceil((reset - now) / 1000)) }
+      );
+      return { limited: count > maxAttempts };
+    } catch {
+      // fall through to memory limiter
+    }
+  }
+
+  // in-memory fallback (single isolate / local dev)
+  const entry = memoryAttempts.get(ip);
+  if (!entry || entry.reset < now) {
+    memoryAttempts.set(ip, { count: 1, reset: now + windowMs });
+    return { limited: false };
+  }
+  entry.count += 1;
+  return { limited: entry.count > maxAttempts };
+}
+
+export function clearLoginAttempts(ip: string): void {
+  memoryAttempts.delete(ip);
+  const kv = getKv();
+  if (kv && typeof kv.delete === "function") {
+    void kv.delete(`${KV_RATE_PREFIX}${ip}`).catch(() => {});
+  }
+}
+
+const memoryAttempts = new Map<string, { count: number; reset: number }>();
 
 function ensureDir() {
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });

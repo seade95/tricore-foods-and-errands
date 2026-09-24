@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { COOKIE_NAME, verifyToken } from "@/lib/auth";
-import { getAuth } from "@/lib/store";
+import { getAuth, getR2 } from "@/lib/store";
 import fs from "fs";
 import path from "path";
 
@@ -17,9 +17,40 @@ async function checkAuth(): Promise<boolean> {
   }
 }
 
+function mediaType(name: string): "video" | "image" {
+  const ext = path.extname(name).toLowerCase();
+  return [".mp4", ".webm", ".mov"].includes(ext) ? "video" : "image";
+}
+
 export async function GET() {
   if (!(await checkAuth())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const r2 = getR2();
+  if (r2) {
+    try {
+      const listed = await r2.list({ limit: 1000 });
+      const files = listed.objects
+        .filter((o) => o.key !== ".gitkeep")
+        .map((o) => ({
+          name: o.key,
+          url: `/uploads/${o.key}`,
+          size: o.size,
+          modified: (o.uploaded instanceof Date
+            ? o.uploaded
+            : new Date(o.uploaded)
+          ).toISOString(),
+          type: mediaType(o.key),
+        }));
+      files.sort(
+        (a, b) =>
+          new Date(b.modified).getTime() - new Date(a.modified).getTime()
+      );
+      return NextResponse.json(files);
+    } catch {
+      return NextResponse.json([]);
+    }
   }
 
   const uploadDir = path.join(process.cwd(), "public", "uploads");
@@ -27,20 +58,23 @@ export async function GET() {
     return NextResponse.json([]);
   }
 
-  const files = fs.readdirSync(uploadDir).filter((f) => f !== ".gitkeep").map((f) => {
-    const stats = fs.statSync(path.join(uploadDir, f));
-    const ext = path.extname(f).toLowerCase();
-    const isVideo = [".mp4", ".webm", ".mov"].includes(ext);
-    return {
-      name: f,
-      url: `/uploads/${f}`,
-      size: stats.size,
-      modified: stats.mtime.toISOString(),
-      type: isVideo ? "video" : "image",
-    };
-  });
+  const files = fs
+    .readdirSync(uploadDir)
+    .filter((f) => f !== ".gitkeep")
+    .map((f) => {
+      const stats = fs.statSync(path.join(uploadDir, f));
+      return {
+        name: f,
+        url: `/uploads/${f}`,
+        size: stats.size,
+        modified: stats.mtime.toISOString(),
+        type: mediaType(f),
+      };
+    });
 
-  files.sort((a, b) => new Date(b.modified).getTime() - new Date(a.modified).getTime());
+  files.sort(
+    (a, b) => new Date(b.modified).getTime() - new Date(a.modified).getTime()
+  );
   return NextResponse.json(files);
 }
 
@@ -54,6 +88,12 @@ export async function DELETE(request: NextRequest) {
     const name = searchParams.get("name");
     if (!name || name.includes("..") || name.includes("/") || name.includes("\\")) {
       return NextResponse.json({ error: "Invalid file name" }, { status: 400 });
+    }
+
+    const r2 = getR2();
+    if (r2) {
+      await r2.delete(name);
+      return NextResponse.json({ ok: true });
     }
 
     const filePath = path.join(process.cwd(), "public", "uploads", name);
