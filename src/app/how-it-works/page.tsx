@@ -22,8 +22,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const stepIcons: Record<string, React.ElementType> = { ClipboardList, Phone, Package, PartyPopper };
 
-export default function HowItWorksPage() {
-  const content = getContent() as Content;
+export default async function HowItWorksPage() {
+  const content = await getContent() as Content;
   const hiw = content.howItWorksPage || ({} as Content["howItWorksPage"]);
   const whatsapp = content.whatsapp || { number: "+234XXXXXXXXXX", message: "" };
   const steps = (hiw.steps || []).map((s: StepItem) => ({

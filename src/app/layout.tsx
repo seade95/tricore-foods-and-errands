@@ -15,7 +15,7 @@ const inter = Inter({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const content = getContent();
+  const content = await getContent();
   const site = content.site || {};
 
   return {
@@ -37,12 +37,12 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const content = getContent();
+  const content = await getContent();
   const site = content.site || { name: "Tricore Foods & Errands", shortName: "TRICORE", subtitle: "Foods & Errands", tagline: "" };
   const whatsapp = content.whatsapp || { number: "+234XXXXXXXXXX", message: "" };
 

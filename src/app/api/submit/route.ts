@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const entry = appendSubmission({ type, data });
+    const entry = await appendSubmission({ type, data });
     return NextResponse.json({ ok: true, id: entry.id });
   } catch {
     return NextResponse.json({ error: "Server error" }, { status: 500 });

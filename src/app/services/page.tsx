@@ -7,15 +7,15 @@ import type { Content, Service } from "@/lib/types";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const content = getContent() as Content;
+  const content = await getContent() as Content;
   return {
     title: "Services",
     description: content.servicesPage?.heroDescription || "Explore all Tricore services.",
   };
 }
 
-export default function ServicesPage() {
-  const content = getContent() as Content;
+export default async function ServicesPage() {
+  const content = await getContent() as Content;
   const services = (content.services || []).filter((s: Service) => s.enabled !== false);
   const sp = content.servicesPage || ({} as Content["servicesPage"]);
   const whatsapp = content.whatsapp || { number: "+234XXXXXXXXXX", message: "" };

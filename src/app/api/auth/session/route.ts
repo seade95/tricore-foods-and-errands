@@ -10,7 +10,7 @@ export async function GET() {
     if (!token) {
       return NextResponse.json({ authenticated: false });
     }
-    const auth = getAuth();
+    const auth = await getAuth();
     const valid = verifyToken(token, auth.secret);
     if (!valid) {
       const response = NextResponse.json({ authenticated: false });

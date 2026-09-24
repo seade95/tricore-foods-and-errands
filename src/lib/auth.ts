@@ -54,8 +54,8 @@ export function verifyPassword(password: string, stored: string): boolean {
   return crypto.timingSafeEqual(hashed, storedHash);
 }
 
-export function checkPassword(password: string): boolean {
-  const auth = getAuth();
+export async function checkPassword(password: string): Promise<boolean> {
+  const auth = await getAuth();
   return verifyPassword(password, auth.password);
 }
 
@@ -64,7 +64,7 @@ export async function isAuthenticated(): Promise<boolean> {
     const store = await cookies();
     const token = store.get(COOKIE_NAME)?.value;
     if (!token) return false;
-    const auth = getAuth();
+    const auth = await getAuth();
     return verifyToken(token, auth.secret);
   } catch {
     return false;

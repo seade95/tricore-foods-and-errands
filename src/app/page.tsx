@@ -37,8 +37,8 @@ const iconMap: Record<string, React.ElementType> = {
   PartyPopper,
 };
 
-export default function Home() {
-  const content = getContent() as Content;
+export default async function Home() {
+  const content = await getContent() as Content;
   const hp = content.homepage;
   const whatsapp = content.whatsapp || { number: "+234XXXXXXXXXX", message: "" };
   const slides = (content.slides || []).filter((s: Slide) => s.enabled !== false);

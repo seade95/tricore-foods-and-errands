@@ -39,8 +39,8 @@ const categories = [
   },
 ];
 
-export default function FoodPage() {
-  const content = getContent();
+export default async function FoodPage() {
+  const content = await getContent();
   const whatsapp = content.whatsapp || { number: "+234XXXXXXXXXX", message: "" };
 
   return (

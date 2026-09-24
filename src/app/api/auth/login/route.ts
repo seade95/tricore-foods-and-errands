@@ -34,12 +34,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Password is required" }, { status: 400 });
     }
 
-    if (!checkPassword(password)) {
+    if (!(await checkPassword(password))) {
       return NextResponse.json({ error: "Invalid password" }, { status: 401 });
     }
 
     attempts.delete(ip);
-    const auth = getAuth();
+    const auth = await getAuth();
     const token = createToken(auth.secret);
     const response = NextResponse.json({ ok: true });
     response.cookies.set(setAuthCookie(token));

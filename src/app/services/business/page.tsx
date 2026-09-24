@@ -37,8 +37,8 @@ const targetOrganisations = [
   "Event Organisers",
 ];
 
-export default function BusinessPage() {
-  const content = getContent();
+export default async function BusinessPage() {
+  const content = await getContent();
   const whatsapp = content.whatsapp || { number: "+234XXXXXXXXXX", message: "" };
 
   return (

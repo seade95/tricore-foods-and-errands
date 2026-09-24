@@ -14,8 +14,8 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function ContactPage() {
-  const content = getContent() as Content;
+export default async function ContactPage() {
+  const content = await getContent() as Content;
   const c = content.contact || ({} as Content["contact"]);
   const w = content.whatsapp || { number: "+234XXXXXXXXXX", message: "" };
   const so = content.social || {};

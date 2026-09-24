@@ -21,6 +21,12 @@
       "service": "tricore-foods-and-errands"
     }
   ],
+  // Enable persistent CMS on Cloudflare:
+  // 1. npm run cf:kv   (requires: npx wrangler login)
+  // 2. Paste the printed id below, then redeploy
+  // "kv_namespaces": [
+  //   { "binding": "TRICORE_KV", "id": "<PASTE_KV_ID_HERE>" }
+  // ],
   "observability": {
     "enabled": true
   }

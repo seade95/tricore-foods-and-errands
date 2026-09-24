@@ -16,8 +16,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const valueIcons: Record<string, React.ElementType> = { Heart, Lightbulb, Users, MapPin };
 
-export default function AboutPage() {
-  const content = getContent() as Content;
+export default async function AboutPage() {
+  const content = await getContent() as Content;
   const a = content.about || ({} as Content["about"]);
   const whatsapp = content.whatsapp || { number: "+234XXXXXXXXXX", message: "" };
   const values = (a.values || []).map((v: IconTextItem) => ({

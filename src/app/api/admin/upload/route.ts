@@ -10,7 +10,7 @@ async function checkAuth(): Promise<boolean> {
     const store = await cookies();
     const token = store.get(COOKIE_NAME)?.value;
     if (!token) return false;
-    const auth = getAuth();
+    const auth = await getAuth();
     return verifyToken(token, auth.secret);
   } catch {
     return false;

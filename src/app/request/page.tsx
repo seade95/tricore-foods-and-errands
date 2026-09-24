@@ -14,8 +14,8 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RequestPage() {
-  const content = getContent() as Content;
+export default async function RequestPage() {
+  const content = await getContent() as Content;
   const payment = content.payment;
   const methods = payment?.enabled
     ? (payment.methods || []).filter((m) => m.enabled)
