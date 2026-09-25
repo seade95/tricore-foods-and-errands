@@ -5,7 +5,9 @@ import { getAuth, trackLoginAttempt, clearLoginAttempts } from "@/lib/store";
 export async function POST(request: NextRequest) {
   try {
     const ip =
-      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
+      request.headers.get("cf-connecting-ip")?.trim() ||
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      "local";
     const { limited } = await trackLoginAttempt(ip);
     if (limited) {
       return NextResponse.json(

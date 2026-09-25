@@ -21,15 +21,11 @@
       "service": "tricore-foods-and-errands"
     }
   ],
-  // Persistent CMS + shared login rate-limit (requires wrangler login):
-  // 1. npm run cf:kv
-  // 2. Paste id below
-  // "kv_namespaces": [
-  //   { "binding": "TRICORE_KV", "id": "<PASTE_KV_ID_HERE>" }
-  // ],
-  // Persistent media uploads (R2):
-  // 1. npm run cf:r2
-  // 2. Uncomment below (bucket_name must match the created bucket)
+  "kv_namespaces": [
+    { "binding": "TRICORE_KV", "id": "f1da8766a08b413e8e11ace4a6d560c6" }
+  ],
+  // R2 media: enable R2 in Cloudflare Dashboard first, then:
+  //   npm run cf:r2  and uncomment below
   // "r2_buckets": [
   //   { "binding": "TRICORE_MEDIA", "bucket_name": "tricore-media" }
   // ],
